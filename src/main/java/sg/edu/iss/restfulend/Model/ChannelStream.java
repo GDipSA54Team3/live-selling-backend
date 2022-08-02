@@ -1,10 +1,12 @@
 package sg.edu.iss.restfulend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,6 +19,7 @@ public class ChannelStream {
     private String id;
     private String name;
     @OneToOne(mappedBy = "channel", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Seller seller;
     
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
@@ -27,5 +30,12 @@ public class ChannelStream {
     private List<OrderProduct> orders;
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
     private List<Stream> streams;
-    
+
+    public ChannelStream(String name) {
+        this.name = name;
+        this.products = new ArrayList<>();
+        this.ratings = new ArrayList<>();
+        this.orders = new ArrayList<>();
+        this.streams = new ArrayList<>();
+    }
 }

@@ -1,5 +1,6 @@
 package sg.edu.iss.restfulend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -7,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,10 +20,17 @@ public class Orders {
 	@GenericGenerator(name="system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     @ManyToOne
+    @JsonIgnore
     private Buyer buyer;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDateTime orderDateTime;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProduct;
+
+    public Orders(Buyer buyer, LocalDateTime orderDateTime) {
+        this.orderDateTime = orderDateTime;
+        this.orderProduct = new ArrayList<>();
+        this.buyer = buyer;
+    }
 }

@@ -1,17 +1,16 @@
 package sg.edu.iss.restfulend.Model;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -26,5 +25,12 @@ public class Message {
     private LocalDateTime timeStamp;
     
     @ManyToOne
+    @JsonIgnore
     private StreamLog log;
+
+    public Message(String message, LocalDateTime timeStamp, StreamLog log) {
+        this.message = message;
+        this.timeStamp = timeStamp;
+        this.log = log;
+    }
 }

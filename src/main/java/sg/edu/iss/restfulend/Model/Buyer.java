@@ -1,10 +1,12 @@
 package sg.edu.iss.restfulend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,10 +25,11 @@ public class Buyer {
     private String lastName;
     @Column(length = 200)
     private String address;
-    private String userName;
-    private String passWord;
+    private String username;
+    private String password;
     private Boolean isVerified;
-    @OneToOne
+    @OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Cart cart;
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
@@ -34,4 +37,14 @@ public class Buyer {
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
     private List<Orders> ordersHistory;
 
+    public Buyer(String firstName, String lastName, String address, String username, String password, Boolean isVerified) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.username = username;
+        this.password = password;
+        this.isVerified = isVerified;
+        this.reviews = new ArrayList<>();
+        this.ordersHistory = new ArrayList<>();
+    }
 }
