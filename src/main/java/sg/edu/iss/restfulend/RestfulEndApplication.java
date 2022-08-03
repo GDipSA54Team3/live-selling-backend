@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import sg.edu.iss.restfulend.Helper.DateTimeConverter;
 import sg.edu.iss.restfulend.Helper.ProductCategories;
+import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
@@ -105,13 +106,13 @@ public class RestfulEndApplication {
 		sellerRepo.save(s1);
 		Cart cc1 = new Cart(s1);
 		cartRepo.save(cc1);
-		Product pcs1_1 = new Product("Aloe Vera Gel", ProductCategories.Health, "Healing gel from South Korea. Used by BTS.", 50.00, 100, cs1);
+		Product pcs1_1 = new Product("Aloe Vera Gel", ProductCategories.HEALTH, "Healing gel from South Korea. Used by BTS.", 50.00, 100, cs1);
 		productRepo.save(pcs1_1);
-		Product pcs1_2 = new Product("Collagen Face Mask", ProductCategories.Health, "Get glowing skin in 1 week! Number 1 product in Busan.", 25.00, 100, cs1);
+		Product pcs1_2 = new Product("Collagen Face Mask", ProductCategories.HEALTH, "Get glowing skin in 1 week! Number 1 product in Busan.", 25.00, 100, cs1);
 		productRepo.save(pcs1_2);
-		Product pcs1_3 = new Product("Anti-aging body lotion", ProductCategories.Health, "Get snow white skin. Number 1 product in Busan.", 25.00, 100, cs1);
+		Product pcs1_3 = new Product("Anti-aging body lotion", ProductCategories.HEALTH, "Get snow white skin. Number 1 product in Busan.", 25.00, 100, cs1);
 		productRepo.save(pcs1_3);
-		Stream ps1 = new Stream("Beauty Bazaar", dtc.dateTimeConvert("05/10/2022 08:30"), cs1);
+		Stream ps1 = new Stream("Beauty Bazaar", dtc.dateTimeConvert("05/10/2022 08:30"), cs1, StreamStatus.PENDING);
 		streamRepo.save(ps1);
 		ChannelStream cs2 = new ChannelStream("HighTech Gadgets");
 		channelRepo.save(cs2);
@@ -119,13 +120,13 @@ public class RestfulEndApplication {
 		sellerRepo.save(s2);
 		Cart cc2 = new Cart(s2);
 		cartRepo.save(cc2);
-		Product pcs2_1 = new Product("iPhone 22", ProductCategories.Technology, "Latest iPhone from the future", 1500.00, 2, cs2);
+		Product pcs2_1 = new Product("iPhone 22", ProductCategories.TECHNOLOGY, "Latest iPhone from the future", 1500.00, 2, cs2);
 		productRepo.save(pcs2_1);
-		Product pcs2_2 = new Product("MacBook Pro 15 M6", ProductCategories.Technology, "Latest MacBook from the future", 3500.00, 3, cs2);
+		Product pcs2_2 = new Product("MacBook Pro 15 M6", ProductCategories.TECHNOLOGY, "Latest MacBook from the future", 3500.00, 3, cs2);
 		productRepo.save(pcs2_2);
-		Product pcs2_3 = new Product("Playstation 5", ProductCategories.Technology, "Next-gen console from Sony", 799.00, 5, cs2);
+		Product pcs2_3 = new Product("Playstation 5", ProductCategories.TECHNOLOGY, "Next-gen console from Sony", 799.00, 5, cs2);
 		productRepo.save(pcs2_3);
-		Stream ps2 = new Stream("Tech Bazaar", dtc.dateTimeConvert("04/09/2022 13:30"), cs2);
+		Stream ps2 = new Stream("Tech Bazaar", dtc.dateTimeConvert("04/09/2022 13:30"), cs2, StreamStatus.PENDING);
 		streamRepo.save(ps2);
 		LOGGER.info("----------------------------populating Sellers");
 	}

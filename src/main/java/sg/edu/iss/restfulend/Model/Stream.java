@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
+import sg.edu.iss.restfulend.Helper.StreamStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,11 +27,14 @@ public class Stream {
     @OneToOne(mappedBy = "stream", cascade = CascadeType.ALL)
     @JsonIgnore
     private StreamLog log;
+    @Enumerated(EnumType.ORDINAL)
+    private StreamStatus status;
 
-    public Stream(String title, LocalDateTime schedule, ChannelStream channel) {
+    public Stream(String title, LocalDateTime schedule, ChannelStream channel, StreamStatus status) {
         this.title = title;
         this.schedule = schedule;
         this.channel = channel;
+        this.status = status;
 
     }
 }

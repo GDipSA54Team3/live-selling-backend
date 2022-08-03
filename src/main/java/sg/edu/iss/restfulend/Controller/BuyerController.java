@@ -76,6 +76,13 @@ public class BuyerController {
         return new ResponseEntity<>(findBuyerById(buyerId).getCart(), HttpStatus.OK);
     }
 
+    @GetMapping("/editcartqty/{orderProdId}/{qty}")
+    public ResponseEntity<OrderProduct> editCartQty(@PathVariable("orderProdId") String orderProdId, @PathVariable("qty") int qty) {
+        OrderProduct op = findOrderProductById(orderProdId);
+        op.setQuantity(qty);
+        return new ResponseEntity<>(orderProductRepo.save(op), HttpStatus.OK);
+    }
+
 
 
 
@@ -103,5 +110,10 @@ public class BuyerController {
     public Product findProductById(String id) {
         Optional<Product> product = productRepo.findById(id);
         return product.isPresent() ? product.get() : null;
+    }
+
+    public OrderProduct findOrderProductById(String id) {
+        Optional<OrderProduct> oProduct = orderProductRepo.findById(id);
+        return oProduct.isPresent() ? oProduct.get() : null;
     }
 }
