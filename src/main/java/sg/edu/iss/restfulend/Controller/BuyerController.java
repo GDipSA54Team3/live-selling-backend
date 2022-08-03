@@ -83,16 +83,29 @@ public class BuyerController {
         return new ResponseEntity<>(orderProductRepo.save(op), HttpStatus.OK);
     }
 
+    @GetMapping("/removecartitem/{orderProdId}")
+    public ResponseEntity<HttpStatus> removeCartItem(@PathVariable("orderProdId") String orderProdId) {
+        try {
+            orderProductRepo.deleteById(orderProdId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 
-
-
-
-
-
-
-
-
-
+    //NOT WORKING
+    @GetMapping("/emptycart/{buyerId}")
+    public ResponseEntity<HttpStatus> emptyCart(@PathVariable("buyerId") String buyerId) {
+        try {
+            List<OrderProduct> cartItems = findBuyerById(buyerId).getCart().getOrderProduct();
+            for (OrderProduct item : cartItems) {
+                orderProductRepo.delete(item);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 
 
 

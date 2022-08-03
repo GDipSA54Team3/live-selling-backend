@@ -51,8 +51,7 @@ public class RestfulEndApplication {
 	CommandLineRunner runner() {
 		return args -> {
 //			clearDatabase();
-			populateBuyers();
-			populateSellersAndProducts();
+			populateDatabase();
 		};
 	}
 
@@ -71,35 +70,7 @@ public class RestfulEndApplication {
 		LOGGER.info("----------------------------clearing Database");
 	}
 
-	public void populateBuyers() {
-		Buyer b1 = new Buyer("Tom", "Tan", "Chua Chu Kang Avenue 2", "tomtan", "tomtan", false);
-		buyerRepo.save(b1);
-		Cart c1 = new Cart(b1);
-		cartRepo.save(c1);
-		Buyer b2 = new Buyer("Melinda", "Mak", "Woodlands Avenue 2", "melmak", "melmak", false);
-		buyerRepo.save(b2);
-		Cart c2 = new Cart(b2);
-		cartRepo.save(c2);
-		Buyer b3 = new Buyer("Joe", "Lim", "Upper Changi Road 2", "joelim", "joelim", false);
-		buyerRepo.save(b3);
-		Cart c3 = new Cart(b3);
-		cartRepo.save(c3);
-		Buyer b4 = new Buyer("Jess", "Park", "Coorperation Drive Avenue 2", "jesspark", "jesspark", false);
-		buyerRepo.save(b4);
-		Cart c4 = new Cart(b4);
-		cartRepo.save(c4);
-		Buyer b5 = new Buyer("Peter", "Pang", "Sentosa Cove 2", "peterpang", "peterpang", false);
-		buyerRepo.save(b5);
-		Cart c5 = new Cart(b5);
-		cartRepo.save(c5);
-		Buyer b6 = new Buyer("Sarah", "Sim", "Sims Avenue 2", "sarahsim", "sarahsim", false);
-		buyerRepo.save(b6);
-		Cart c6 = new Cart(b6);
-		cartRepo.save(c6);
-		LOGGER.info("----------------------------populating Buyers");
-	}
-
-	public void populateSellersAndProducts() {
+	public void populateDatabase() {
 		ChannelStream cs1 = new ChannelStream("Better Living");
 		channelRepo.save(cs1);
 		Seller s1 = new Seller("Amanda", "Chong", "Upper Paya Lebar West", "amandachong", "amandachong", true, cs1);
@@ -129,6 +100,42 @@ public class RestfulEndApplication {
 		Stream ps2 = new Stream("Tech Bazaar", dtc.dateTimeConvert("04/09/2022 13:30"), cs2, StreamStatus.PENDING);
 		streamRepo.save(ps2);
 		LOGGER.info("----------------------------populating Sellers");
+
+		Buyer b1 = new Buyer("Tom", "Tan", "Chua Chu Kang Avenue 2", "tomtan", "tomtan", false);
+		buyerRepo.save(b1);
+		Cart c1 = new Cart(b1);
+		cartRepo.save(c1);
+		OrderProduct op1_1 = new OrderProduct(1, pcs1_1, null, null, c1);
+		orderProductRepo.save(op1_1);
+		OrderProduct op1_2 = new OrderProduct(1, pcs1_2, null, null, c1);
+		orderProductRepo.save(op1_2);
+		OrderProduct op1_3 = new OrderProduct(1, pcs2_3, null, null, c1);
+		orderProductRepo.save(op1_3);
+		Buyer b2 = new Buyer("Melinda", "Mak", "Woodlands Avenue 2", "melmak", "melmak", false);
+		buyerRepo.save(b2);
+		Cart c2 = new Cart(b2);
+		cartRepo.save(c2);
+		Buyer b3 = new Buyer("Joe", "Lim", "Upper Changi Road 2", "joelim", "joelim", false);
+		buyerRepo.save(b3);
+		Cart c3 = new Cart(b3);
+		cartRepo.save(c3);
+		Buyer b4 = new Buyer("Jess", "Park", "Coorperation Drive Avenue 2", "jesspark", "jesspark", false);
+		buyerRepo.save(b4);
+		Cart c4 = new Cart(b4);
+		cartRepo.save(c4);
+		Buyer b5 = new Buyer("Peter", "Pang", "Sentosa Cove 2", "peterpang", "peterpang", false);
+		buyerRepo.save(b5);
+		Cart c5 = new Cart(b5);
+		cartRepo.save(c5);
+		Buyer b6 = new Buyer("Sarah", "Sim", "Sims Avenue 2", "sarahsim", "sarahsim", false);
+		buyerRepo.save(b6);
+		Cart c6 = new Cart(b6);
+		cartRepo.save(c6);
+		LOGGER.info("----------------------------populating Buyers");
+
+
+
+
 	}
 
 
