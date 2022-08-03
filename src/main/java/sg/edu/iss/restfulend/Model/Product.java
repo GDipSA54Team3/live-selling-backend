@@ -42,4 +42,5 @@ public class Product {
         this.channel = channel;
         this.orderProduct = new ArrayList<>();
     }
+
 }
