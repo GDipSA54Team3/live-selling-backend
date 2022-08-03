@@ -20,7 +20,7 @@ public class Product {
     private String id;
     @Column(length = 100)
     private String name;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private ProductCategories category;
     @Column(length = 500)
     private String description;

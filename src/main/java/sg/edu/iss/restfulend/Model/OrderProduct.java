@@ -33,4 +33,12 @@ public class OrderProduct {
     public OrderProduct(int quantity) {
         this.quantity = quantity;
     }
+
+    public OrderProduct(int quantity, Product product, Orders order, ChannelStream channel, Cart cart) {
+        this.quantity = quantity;
+        this.product = product;
+        this.channel = channel;
+        this.cart = cart;
+        this.order = order;
+    }
 }

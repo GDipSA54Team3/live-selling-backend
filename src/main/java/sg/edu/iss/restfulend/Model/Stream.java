@@ -27,7 +27,7 @@ public class Stream {
     @OneToOne(mappedBy = "stream", cascade = CascadeType.ALL)
     @JsonIgnore
     private StreamLog log;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private StreamStatus status;
 
     public Stream(String title, LocalDateTime schedule, ChannelStream channel, StreamStatus status) {
