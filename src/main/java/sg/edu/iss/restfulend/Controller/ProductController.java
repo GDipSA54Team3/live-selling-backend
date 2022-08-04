@@ -8,6 +8,8 @@ import sg.edu.iss.restfulend.Helper.ProductCategories;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
+import javax.xml.ws.Response;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -37,35 +39,79 @@ public class ProductController {
     @Autowired
     StreamLogRepository logRepo;
 
-    @GetMapping("/details/{prodId}")
-    public ResponseEntity<Product> findProductById(@PathVariable("prodId") String prodId) {
-        Product selected = findProductById(prodId).getBody();
-        return selected != null ? new ResponseEntity<>(selected, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping("/details")
+    public List<Product> getProducts() {
+        return productRepo.findAll();
     }
 
-    @GetMapping("/addtochannel/{channelId}/{prodId}/{qty}")
-    public ResponseEntity<Product> addToChannel(@PathVariable("prodId") String prodId, @PathVariable("sellerId") String sellerId,
-                                                @PathVariable("name") String name, @PathVariable("categories") ProductCategories category,
-                                                @PathVariable("description") String description, @PathVariable("price") String price,
-                                                @PathVariable("quantity") int quantity) {
-        if (productRepo.findExistInChannel(sellerId, prodId) != null) {
-            Product existingProdInChannel = productRepo.findExistInChannel(sellerId, prodId);
-            int oldQty = existingProdInChannel.getQuantity();
-            existingProdInChannel.setQuantity(oldQty + quantity);
-            return new ResponseEntity<>(productRepo.save(existingProdInChannel), HttpStatus.OK);
+    @GetMapping("/details/{prodId}")
+    public ResponseEntity<Product> findProductById(@PathVariable("prodId") String prodId) {
+        String s = prodId;
+        Optional<Product> pData = productRepo.findById(s);
+        if (pData.isPresent()) {
+            return new ResponseEntity<>(pData.get(), HttpStatus.OK);
         } else {
-            Product addProdToChannel = new Product();
-            addProdToChannel.setChannel(findUserById(sellerId).getChannel());
-            return new ResponseEntity<>(productRepo.save(addProdToChannel), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         }
     }
 
-    public User findUserById(String id) {
-        Optional<User> seller = userRepo.findById(id);
-        return seller.isPresent() ? seller.get() : null;
+    @PutMapping("/details/edit/{prodId}")
+    public ResponseEntity<Product> editProduct(@PathVariable("prodId") String prodId, @RequestBody Product product) {
+        Optional<Product> pData = productRepo.findById(prodId);
+        if (pData.isPresent()) {
+            Product _product = pData.get();
+            _product.setId(product.getId());
+            _product.setName(product.getName());
+            _product.setCategory(product.getCategory());
+            _product.setDescription(product.getDescription());
+            _product.setPrice(product.getPrice());
+            return new ResponseEntity<>(productRepo.save(_product), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
+    @PostMapping("/addtostore/")
+    public ResponseEntity<Product> addToStore(Product product) {
+        try {
+            Product p = productRepo.save(new Product(product.getName(), product.getCategory(), product.getDescription(),
+                    product.getPrice(), product.getQuantity(), product.getChannel()));
+            return new ResponseEntity<>(p, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @DeleteMapping("/details/{prodId}")
+    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("prodId") String prodId) {
+        try {
+            productRepo.deletebyId(prodId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+
+        }
+    }
+
+    @DeleteMapping("/details")
+    public ResponseEntity<HttpStatus> deleteAllProducts() {
+        try {
+            productRepo.deleteAll();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+
+        }
     }
 }
+
+
+
+
+
+
+
 
 
 
