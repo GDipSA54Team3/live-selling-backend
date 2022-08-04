@@ -39,12 +39,12 @@ public class ProductController {
     @Autowired
     StreamLogRepository logRepo;
 
-    @GetMapping("/details")
+    @GetMapping("/products")
     public List<Product> getProducts() {
         return productRepo.findAll();
     }
 
-    @GetMapping("/details/{prodId}")
+    @GetMapping("/products/{prodId}")
     public ResponseEntity<Product> findProductById(@PathVariable("prodId") String prodId) {
         String s = prodId;
         Optional<Product> pData = productRepo.findById(s);
@@ -56,7 +56,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/details/edit/{prodId}")
+    @PutMapping("/products/edit/{prodId}")
     public ResponseEntity<Product> editProduct(@PathVariable("prodId") String prodId, @RequestBody Product product) {
         Optional<Product> pData = productRepo.findById(prodId);
         if (pData.isPresent()) {
@@ -83,7 +83,7 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/details/{prodId}")
+    @DeleteMapping("/products/{prodId}")
     public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("prodId") String prodId) {
         try {
             productRepo.deletebyId(prodId);
@@ -94,7 +94,7 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/details")
+    @DeleteMapping("/products")
     public ResponseEntity<HttpStatus> deleteAllProducts() {
         try {
             productRepo.deleteAll();
