@@ -11,6 +11,7 @@ import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
+import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 @SpringBootApplication
@@ -83,7 +84,7 @@ public class RestfulEndApplication {
 		productRepo.save(pcs1_2);
 		Product pcs1_3 = new Product("Anti-aging body lotion", ProductCategories.HEALTH, "Get snow white skin. Number 1 product in Busan.", 25.00, 100, cs1);
 		productRepo.save(pcs1_3);
-		Stream ps1 = new Stream("Beauty Bazaar", dtc.dateTimeConvert("05/10/2022 08:30"), cs1, StreamStatus.PENDING);
+		Stream ps1 = new Stream("Beauty Bazaar", LocalDateTime.now(), cs1, StreamStatus.ONGOING);
 		streamRepo.save(ps1);
 		ChannelStream cs2 = new ChannelStream("HighTech Gadgets");
 		channelRepo.save(cs2);

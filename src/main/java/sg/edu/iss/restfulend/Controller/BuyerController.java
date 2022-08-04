@@ -55,6 +55,12 @@ public class BuyerController {
         return selected != null ? new ResponseEntity<>(selected, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/channels/{channelId}")
+    public ResponseEntity<ChannelStream> selectChannel(@PathVariable("channelId") String channelId) {
+        ChannelStream selected = findChannelById(channelId);
+        return selected != null ? new ResponseEntity<>(selected, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping("/addtocart/{buyerId}/{prodId}/{qty}")
     public ResponseEntity<OrderProduct> addToCart(@PathVariable("prodId") String prodId, @PathVariable("buyerId") String buyerId,
                                                   @PathVariable("qty") int qty) {
@@ -128,5 +134,10 @@ public class BuyerController {
     public OrderProduct findOrderProductById(String id) {
         Optional<OrderProduct> oProduct = orderProductRepo.findById(id);
         return oProduct.isPresent() ? oProduct.get() : null;
+    }
+
+    public ChannelStream findChannelById(String id) {
+        Optional<ChannelStream> channel = channelRepo.findById(id);
+        return channel.isPresent() ? channel.get() : null;
     }
 }
