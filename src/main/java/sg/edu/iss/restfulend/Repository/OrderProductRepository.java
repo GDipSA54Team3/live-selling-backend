@@ -10,6 +10,4 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Stri
     @Query("SELECT op FROM OrderProduct op JOIN op.cart opc JOIN op.product opp WHERE opc.user.id = :buyerId AND opp.id = :prodId")
     OrderProduct findExistInCart(String buyerId, String prodId);
 
-    @Query("DELETE FROM OrderProduct op WHERE op.id = :id")
-    void removeById(String id);
 }
