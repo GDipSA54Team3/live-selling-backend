@@ -18,14 +18,14 @@ public class Cart {
 	@GenericGenerator(name="system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     @OneToOne
-    @JsonIgnore
-    private Buyer buyer;
+    private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderProduct> orderProduct;
 
-    public Cart(Buyer buyer) {
+    public Cart(User user) {
         this.orderProduct = new ArrayList<>();
-        this.buyer = buyer;
+        this.user = user;
     }
 }

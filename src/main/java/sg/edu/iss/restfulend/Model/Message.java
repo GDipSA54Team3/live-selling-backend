@@ -1,6 +1,5 @@
 package sg.edu.iss.restfulend.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,7 +24,6 @@ public class Message {
     private LocalDateTime timeStamp;
     
     @ManyToOne
-    @JsonIgnore
     private StreamLog log;
 
     public Message(String message, LocalDateTime timeStamp, StreamLog log) {

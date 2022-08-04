@@ -18,24 +18,28 @@ public class ChannelStream {
 	@GenericGenerator(name="system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     private String name;
-    @OneToOne(mappedBy = "channel", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Seller seller;
+    @OneToOne
+    private User user;
     
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Product> products;
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Rating> ratings;
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderProduct> orders;
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Stream> streams;
 
-    public ChannelStream(String name) {
+    public ChannelStream(String name, User user) {
         this.name = name;
         this.products = new ArrayList<>();
         this.ratings = new ArrayList<>();
         this.orders = new ArrayList<>();
         this.streams = new ArrayList<>();
+        this.user = user;
     }
 }

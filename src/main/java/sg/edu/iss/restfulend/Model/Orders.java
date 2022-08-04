@@ -20,17 +20,17 @@ public class Orders {
 	@GenericGenerator(name="system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     @ManyToOne
-    @JsonIgnore
-    private Buyer buyer;
+    private User user;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDateTime orderDateTime;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderProduct> orderProduct;
 
-    public Orders(Buyer buyer, LocalDateTime orderDateTime) {
+    public Orders(User user, LocalDateTime orderDateTime) {
         this.orderDateTime = orderDateTime;
         this.orderProduct = new ArrayList<>();
-        this.buyer = buyer;
+        this.user = user;
     }
 }

@@ -19,10 +19,10 @@ public class StreamLog {
     private String id;
     private int numLikes;
     @OneToOne
-    @JsonIgnore
     private Stream stream;
 
     @OneToMany(mappedBy = "log", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Message> messages;
 
     public StreamLog(int numLikes) {

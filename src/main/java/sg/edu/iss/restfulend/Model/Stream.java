@@ -22,7 +22,6 @@ public class Stream {
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private LocalDateTime schedule;
     @ManyToOne
-    @JsonIgnore
     private ChannelStream channel;
     @OneToOne(mappedBy = "stream", cascade = CascadeType.ALL)
     @JsonIgnore
