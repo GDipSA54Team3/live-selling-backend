@@ -8,7 +8,6 @@ import sg.edu.iss.restfulend.Helper.ProductCategories;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -18,7 +17,7 @@ import java.util.Optional;
 public class ProductController {
 
     @Autowired
-    BuyerRepository buyerRepo;
+    UserRepository userRepo;
     @Autowired
     CartRepository cartRepo;
     @Autowired
@@ -33,8 +32,6 @@ public class ProductController {
     ProductRepository productRepo;
     @Autowired
     RatingRepository ratingRepo;
-    @Autowired
-    SellerRepository sellerRepo;
     @Autowired
     StreamRepository streamRepo;
     @Autowired
@@ -58,13 +55,13 @@ public class ProductController {
             return new ResponseEntity<>(productRepo.save(existingProdInChannel), HttpStatus.OK);
         } else {
             Product addProdToChannel = new Product();
-            addProdToChannel.setChannel(findSellerById(sellerId).getChannel());
+            addProdToChannel.setChannel(findUserById(sellerId).getChannel());
             return new ResponseEntity<>(productRepo.save(addProdToChannel), HttpStatus.OK);
         }
     }
 
-    public Seller findSellerById(String id) {
-        Optional<Seller> seller = sellerRepo.findById(id);
+    public User findUserById(String id) {
+        Optional<User> seller = userRepo.findById(id);
         return seller.isPresent() ? seller.get() : null;
 
     }

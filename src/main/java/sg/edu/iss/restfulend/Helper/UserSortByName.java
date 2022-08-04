@@ -1,0 +1,12 @@
+package sg.edu.iss.restfulend.Helper;
+
+import sg.edu.iss.restfulend.Model.User;
+
+import java.util.Comparator;
+
+public class UserSortByName implements Comparator<User> {
+    @Override
+    public int compare(User o1, User o2) {
+        return o1.getFirstName().toLowerCase().compareTo(o2.getFirstName().toLowerCase());
+    }
+}

@@ -10,11 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "UserType", discriminatorType = DiscriminatorType.STRING)
 @Data
 @NoArgsConstructor
-public class Buyer {
+public class User {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
@@ -28,16 +26,21 @@ public class Buyer {
     private String username;
     private String password;
     private Boolean isVerified;
-    @OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private Cart cart;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private ChannelStream channel;
 
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Rating> reviews;
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Orders> ordersHistory;
 
-    public Buyer(String firstName, String lastName, String address, String username, String password, Boolean isVerified) {
+    public User(String firstName, String lastName, String address, String username, String password, Boolean isVerified) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;

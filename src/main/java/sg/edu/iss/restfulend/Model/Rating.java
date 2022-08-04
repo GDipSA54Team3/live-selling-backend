@@ -1,6 +1,5 @@
 package sg.edu.iss.restfulend.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,15 +19,13 @@ public class Rating {
     private String id;
     private int rate;
     @ManyToOne
-    @JsonIgnore
     private ChannelStream channel;
     @ManyToOne
-    @JsonIgnore
-    private Buyer buyer;
+    private User user;
 
-    public Rating(int rate, ChannelStream channel, Buyer buyer) {
+    public Rating(int rate, ChannelStream channel, User user) {
         this.rate = rate;
         this.channel = channel;
-        this.buyer = buyer;
+        this.user = user;
     }
 }

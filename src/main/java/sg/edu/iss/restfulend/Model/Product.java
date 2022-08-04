@@ -28,9 +28,9 @@ public class Product {
     private int quantity;
 
     @ManyToOne
-    @JsonIgnore
     private ChannelStream channel;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderProduct> orderProduct;
 
     public Product(String name, ProductCategories category, String description, double price, int quantity, ChannelStream channel) {

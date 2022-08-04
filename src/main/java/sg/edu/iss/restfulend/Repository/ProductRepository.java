@@ -7,7 +7,7 @@ import sg.edu.iss.restfulend.Model.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
-    @Query("SELECT p FROM Product p JOIN p.channel ch JOIN ch.products chp WHERE ch.seller.id =:sellerId AND chp.id =:prodId")
+    @Query("SELECT p FROM Product p JOIN p.channel ch JOIN ch.products chp WHERE ch.user.id =:sellerId AND chp.id =:prodId")
     public Product findExistInChannel(String sellerId, String prodId);
 }
 
