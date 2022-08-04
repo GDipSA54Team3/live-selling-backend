@@ -9,6 +9,9 @@ import sg.edu.iss.restfulend.Model.Product;
 public interface ProductRepository extends JpaRepository<Product, String> {
     @Query("SELECT p FROM Product p JOIN p.channel ch JOIN ch.products chp WHERE ch.user.id =:sellerId AND chp.id =:prodId")
     public Product findExistInChannel(String sellerId, String prodId);
+
+    @Query("DELETE p FROM Product p WHERE p.product.id = ?1")
+    public Product deletebyId(String prodId);
 }
 
 
