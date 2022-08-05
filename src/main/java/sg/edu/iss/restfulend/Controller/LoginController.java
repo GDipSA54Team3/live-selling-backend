@@ -8,8 +8,7 @@ import sg.edu.iss.restfulend.Model.LoginBag;
 import sg.edu.iss.restfulend.Model.User;
 import sg.edu.iss.restfulend.Repository.UserRepository;
 
-import javax.servlet.http.HttpSession;
-
+// @CrossOrigin(origins= "http://localhost:3000")
 @CrossOrigin
 @RestController
 @RequestMapping("/api")
@@ -18,26 +17,10 @@ public class LoginController {
     UserRepository userRepo;
 
     @PostMapping("/login")
-    public ResponseEntity<User> loginCheck(@RequestBody LoginBag loginUser, HttpSession session) {
+    public ResponseEntity<User> loginCheck(@RequestBody LoginBag loginUser) {
         if (userRepo.findUserByUsernameAndPassword(loginUser.getUsername(), loginUser.getPassword()) != null) {
             User user = userRepo.findUserByUsernameAndPassword(loginUser.getUsername(), loginUser.getPassword());
-            session.setAttribute("loggedInUser", user);
-            return new ResponseEntity<>((User) session.getAttribute("loggedInUser"), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<HttpStatus> logoutUser(HttpSession session) {
-        session.invalidate();
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/welcome")
-    public ResponseEntity<User> getLoggedInUser(HttpSession session) {
-        if (session.getAttribute("loggedInUser") != null){
-            return new ResponseEntity<>((User) session.getAttribute("loggedInUser"), HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
