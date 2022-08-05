@@ -11,8 +11,9 @@ import sg.edu.iss.restfulend.Repository.*;
 import java.util.List;
 import java.util.Optional;
 
+
+// @CrossOrigin(origins= "http://localhost:3000")
 @CrossOrigin
-//@CrossOrigin(origins= "http://localhost:3000")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -41,6 +42,11 @@ public class UserController {
     @GetMapping("/streams")
     public List<Stream> getAllStreams() {
         return streamRepo.findAll();
+    }
+
+    @GetMapping("/userstreams/{userId}")
+    public ResponseEntity<List<Stream>> getAllUserStreams(@PathVariable("userId") String userId) {
+        return new ResponseEntity<>(channelRepo.getStreamsByUserId(userId), HttpStatus.OK);
     }
 
     @GetMapping("/channels")
@@ -119,7 +125,6 @@ public class UserController {
         users.sort(new UserSortByName());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
 
 
     //OTHER METHODS

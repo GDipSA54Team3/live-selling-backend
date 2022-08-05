@@ -22,8 +22,11 @@ public class User {
     @Column(length = 100)
     private String lastName;
     @Column(length = 200)
+    @JsonIgnore
     private String address;
+    @JsonIgnore
     private String username;
+    @JsonIgnore
     private String password;
     private Boolean isVerified;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
