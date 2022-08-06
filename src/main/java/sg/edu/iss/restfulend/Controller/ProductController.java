@@ -4,16 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sg.edu.iss.restfulend.Helper.ProductCategories;
-import sg.edu.iss.restfulend.Model.*;
+import sg.edu.iss.restfulend.Model.Product;
 import sg.edu.iss.restfulend.Repository.*;
 
-import javax.xml.ws.Response;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
-//@CrossOrigin(origins= "http://localhost:3000")
+
+@CrossOrigin(origins= "*")
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {

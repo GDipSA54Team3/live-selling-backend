@@ -8,8 +8,7 @@ import sg.edu.iss.restfulend.Model.LoginBag;
 import sg.edu.iss.restfulend.Model.User;
 import sg.edu.iss.restfulend.Repository.UserRepository;
 
-// @CrossOrigin(origins= "http://localhost:3000")
-@CrossOrigin
+@CrossOrigin(origins= "*")
 @RestController
 @RequestMapping("/api")
 public class LoginController {

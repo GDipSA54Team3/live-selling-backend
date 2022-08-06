@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-// @CrossOrigin(origins= "http://localhost:3000")
-@CrossOrigin
+@CrossOrigin(origins= "*")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -49,6 +48,13 @@ public class UserController {
         return new ResponseEntity<>(channelRepo.getStreamsByUserId(userId), HttpStatus.OK);
     }
 
+    @DeleteMapping("/deletestream/{streamId}")
+    public ResponseEntity<HttpStatus> deleteStream(@PathVariable("streamId") String streamId) {
+        Stream selected = findStreamById(streamId);
+        streamRepo.delete(selected);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/channels")
     public List<ChannelStream> getAllChannels() {
         return channelRepo.findAll();
@@ -66,7 +72,7 @@ public class UserController {
         return selected != null ? new ResponseEntity<>(selected, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/addtocart/{userId}/{prodId}/{qty}")
+    @PutMapping("/addtocart/{userId}/{prodId}/{qty}")
     public ResponseEntity<OrderProduct> addToCart(@PathVariable("prodId") String prodId, @PathVariable("userId") String userId,
                                                   @PathVariable("qty") int qty) {
         if (orderProductRepo.findExistInCart(userId, prodId) != null) {
@@ -87,14 +93,14 @@ public class UserController {
         return new ResponseEntity<>(findBuyerById(userId).getCart().getOrderProduct(), HttpStatus.OK);
     }
 
-    @GetMapping("/editcartqty/{orderProdId}/{qty}")
+    @PutMapping("/editcartqty/{orderProdId}/{qty}")
     public ResponseEntity<OrderProduct> editCartQty(@PathVariable("orderProdId") String orderProdId, @PathVariable("qty") int qty) {
         OrderProduct op = findOrderProductById(orderProdId);
         op.setQuantity(qty);
         return new ResponseEntity<>(orderProductRepo.save(op), HttpStatus.OK);
     }
 
-    @GetMapping("/removecartitem/{orderProdId}")
+    @DeleteMapping("/removecartitem/{orderProdId}")
     public ResponseEntity<HttpStatus> removeCartItem(@PathVariable("orderProdId") String orderProdId) {
         try {
             orderProductRepo.deleteById(orderProdId);
@@ -105,7 +111,7 @@ public class UserController {
     }
 
     //NOT WORKING
-    @GetMapping("/emptycart/{userId}")
+    @DeleteMapping("/emptycart/{userId}")
     public ResponseEntity<HttpStatus> emptyCart(@PathVariable("userId") String userId) {
         try {
             List<OrderProduct> cartItems = findBuyerById(userId).getCart().getOrderProduct();
