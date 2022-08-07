@@ -5,6 +5,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
 import sg.edu.iss.restfulend.Helper.DateTimeConverter;
 import sg.edu.iss.restfulend.Helper.ProductCategories;
 import sg.edu.iss.restfulend.Helper.StreamStatus;
@@ -12,6 +16,7 @@ import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 @SpringBootApplication
@@ -148,13 +153,43 @@ public class RestfulEndApplication {
 		cartRepo.save(c6);
 		ChannelStream csb6 = new ChannelStream("sarahsim", b6);
 		channelRepo.save(csb6);
-
+		
+		
+		Rating rs1 = new Rating(2, cs1, s1); //Amanda's rating
+		Rating rs2 = new Rating(3, cs2, s2); //James's rating
+		Rating rs3 = new Rating(4, cs2, s2); //James's another rating
+		Rating rs4 = new Rating(1, cs2, s2); //James's another rating
+		Rating rb1 = new Rating(5, csb1, b1); //Tom's rating
+		Rating rb2 = new Rating(4, csb2, b2); //Melinda's rating
+		Rating rb3 = new Rating(3, csb3, b3);  //Jee's rating
+		Rating rb4 = new Rating(1, csb4, b4);  //Jess's rating
+		Rating rb5 = new Rating(4, csb5, b5);  //Peter's rating
+		Rating rb6 = new Rating(2, csb6, b6);  //Sarah's rating
+		
+		ratingRepo.save(rs1);ratingRepo.save(rs2);ratingRepo.save(rs3);ratingRepo.save(rs4);
+		ratingRepo.save(rb1);ratingRepo.save(rb2);ratingRepo.save(rb3);
+		ratingRepo.save(rb4);ratingRepo.save(rb5);ratingRepo.save(rb6);
+			
 		LOGGER.info("----------------------------populating database");
 
-
-
-
-	}
+	}	
+	//to address CORS error when running on local host
+	@Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Origin","Access-Control-Allow-Origin",
+                "Content-Type","Accept","Authorization","Origin,Accept","X-Requested-With",
+                "Access-Control-Request-Method","Access-Control-Request-Headers"));
+        corsConfiguration.setExposedHeaders(Arrays.asList("Origin","Content-Type","Accept","Authorization",
+                "Access-Control-Allow-Origin","Access-Control-Allow-Origin","Access-Control-Allow-Credentials"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET","PUT","POST","DELETE","OPTIONS"));
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(urlBasedCorsConfigurationSource);
+        
+    }
 
 
 }
