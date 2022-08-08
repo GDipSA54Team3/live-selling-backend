@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sg.edu.iss.restfulend.Helper.DateTimeConverter;
+import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Helper.UserSortByName;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
 import java.util.List;
 import java.util.Optional;
-
 
 @CrossOrigin(origins= "*")
 @RestController
@@ -37,6 +38,8 @@ public class UserController {
     StreamRepository streamRepo;
     @Autowired
     StreamLogRepository logRepo;
+    @Autowired
+    DateTimeConverter dtc;
 
     @GetMapping("/streams")
     public List<Stream> getAllStreams() {
@@ -46,6 +49,11 @@ public class UserController {
     @GetMapping("/userstreams/{userId}")
     public ResponseEntity<List<Stream>> getAllUserStreams(@PathVariable("userId") String userId) {
         return new ResponseEntity<>(channelRepo.getStreamsByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/userstreamspending/{userId}")
+    public ResponseEntity<List<Stream>> getAllUserStreamsPending(@PathVariable("userId") String userId) {
+        return new ResponseEntity<>(streamRepo.getStreamsByUserIdAndStatus(userId, StreamStatus.PENDING), HttpStatus.OK);
     }
 
     @DeleteMapping("/deletestream/{streamId}")
@@ -82,7 +90,7 @@ public class UserController {
             return new ResponseEntity<>(orderProductRepo.save(existingProdInCart), HttpStatus.OK);
         } else {
             OrderProduct addProdToCart = new OrderProduct(qty);
-            addProdToCart.setCart(findBuyerById(userId).getCart());
+            addProdToCart.setCart(findUserById(userId).getCart());
             addProdToCart.setProduct(findProductById(prodId));
             return new ResponseEntity<>(orderProductRepo.save(addProdToCart), HttpStatus.OK);
         }
@@ -90,7 +98,7 @@ public class UserController {
 
     @GetMapping("/viewcart/{userId}")
     public ResponseEntity<List<OrderProduct>> viewCart(@PathVariable("userId") String userId) {
-        return new ResponseEntity<>(findBuyerById(userId).getCart().getOrderProduct(), HttpStatus.OK);
+        return new ResponseEntity<>(findUserById(userId).getCart().getOrderProduct(), HttpStatus.OK);
     }
 
     @PutMapping("/editcartqty/{orderProdId}/{qty}")
@@ -114,11 +122,35 @@ public class UserController {
     @DeleteMapping("/emptycart/{userId}")
     public ResponseEntity<HttpStatus> emptyCart(@PathVariable("userId") String userId) {
         try {
-            List<OrderProduct> cartItems = findBuyerById(userId).getCart().getOrderProduct();
+            List<OrderProduct> cartItems = findUserById(userId).getCart().getOrderProduct();
             for (OrderProduct item : cartItems) {
                 orderProductRepo.delete(item);
             }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PostMapping("/addstream/{userId}")
+    public ResponseEntity<Stream> addNewStream(@RequestBody Stream newStream, @PathVariable("userId") String userId) {
+        try {
+            Stream stream = streamRepo.save(new Stream(newStream.getTitle(), dtc.dateTimeConvertClient(newStream.getTempSchedule()), findUserById(userId).getChannel(), StreamStatus.PENDING));
+            return new ResponseEntity<>(stream, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/editstream/{streamId}")
+    public ResponseEntity<Stream> editStream(@RequestBody Stream stream, @PathVariable("streamId") String streamId) {
+        try {
+            Stream selectStream = findStreamById(streamId);
+            selectStream.setTitle(stream.getTitle());
+            streamRepo.save(selectStream);
+            selectStream.setSchedule(dtc.dateTimeConvertClient(stream.getTempSchedule()));
+            streamRepo.save(selectStream);
+            return new ResponseEntity<>(selectStream, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
@@ -139,7 +171,7 @@ public class UserController {
         return stream.isPresent() ? stream.get() : null;
     }
 
-    public User findBuyerById(String id) {
+    public User findUserById(String id) {
         Optional<User> buyer = userRepo.findById(id);
         return buyer.isPresent() ? buyer.get() : null;
     }
