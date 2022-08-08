@@ -1,6 +1,9 @@
 package sg.edu.iss.restfulend.Helper;
 
 public enum ProductCategories {
-    HEALTH,
-    TECHNOLOGY
+	
+	CLOTHING, FOOD, APPLIANCES,
+	FURNITURES, TECHNOLOGY, BABY,
+	HEALTH, OTHERS, SPORTS, GROCERIES
+	
 }
