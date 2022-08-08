@@ -21,6 +21,8 @@ public class Stream {
     private String title;
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private LocalDateTime schedule;
+    @Transient
+    private String tempSchedule;
     @ManyToOne
     private ChannelStream channel;
     @OneToOne(mappedBy = "stream", cascade = CascadeType.ALL)
