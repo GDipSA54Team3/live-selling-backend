@@ -5,16 +5,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
 import sg.edu.iss.restfulend.Helper.DateTimeConverter;
 import sg.edu.iss.restfulend.Helper.ProductCategories;
 import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -213,9 +208,8 @@ public class RestfulEndApplication {
 				ordersRepo.save(order9);ordersRepo.save(order10);	
 				ordersRepo.save(order11);
 			}			
-		}
-			
-		LOGGER.info("----------------------------Database populated successfully!");
-	        
+		}	
+
+		LOGGER.info("----------------------------Database populated successfully!");	        
     }
 }
