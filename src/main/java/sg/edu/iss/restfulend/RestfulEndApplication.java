@@ -10,8 +10,11 @@ import sg.edu.iss.restfulend.Helper.ProductCategories;
 import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
-
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @SpringBootApplication
@@ -71,6 +74,8 @@ public class RestfulEndApplication {
 
 	public void populateDatabase() {
 
+		LOGGER.info("----------------------------Populating database.." );		
+		
 		User s1 = new User("Amanda", "Chong", "Upper Paya Lebar West", "amandachong", "amandachong", true);
 		UserRepo.save(s1);
 		Cart cc1 = new Cart(s1);
@@ -149,7 +154,7 @@ public class RestfulEndApplication {
 		ChannelStream csb6 = new ChannelStream("sarahsim", b6);
 		channelRepo.save(csb6);
 		
-		
+		//populate rating for dashboard
 		Rating rs1 = new Rating(2, cs1, s1); //Amanda's rating
 		Rating rs2 = new Rating(3, cs2, s2); //James's rating
 		Rating rs3 = new Rating(4, cs2, s2); //James's another rating
@@ -164,8 +169,47 @@ public class RestfulEndApplication {
 		ratingRepo.save(rs1);ratingRepo.save(rs2);ratingRepo.save(rs3);ratingRepo.save(rs4);
 		ratingRepo.save(rb1);ratingRepo.save(rb2);ratingRepo.save(rb3);
 		ratingRepo.save(rb4);ratingRepo.save(rb5);ratingRepo.save(rb6);
-			
-		LOGGER.info("----------------------------populating database");
+		
+		//populate orders to plot djshbord charts
+		LOGGER.info("---------------------------This will take a while. Please wait" );
+		
+		User buyer1 = new User("Jack", "Lee", "Chua Chu Kang Avenue 2", "jacklee", "jacklee", false); //buyer
+		UserRepo.save(buyer1);
+		LocalDateTime startDateTime = LocalDateTime.of(2022,Month.JULY,1,1,30,40,50000); //2022-07-08T01:30:40.000050
+		LocalDateTime now = LocalDateTime.now();
+		Integer daysBetween = (int)Duration.between(startDateTime, now).toDays();
+	
+		for (int i =0; i <daysBetween; i++) {	
+			Random r = new Random();
+			int low = 1;
+			int high = 20;
+			int noOfOrders = r.nextInt(high-low) + low;			
+			LocalDateTime datetime = startDateTime.plusDays(i);
+			for (int j =0; j <noOfOrders; j++) {
+				LocalDateTime datetime1 = datetime;
+				LocalDateTime datetime2 = datetime1.plusHours(6);
+				LocalDateTime datetime3 = datetime1.plusHours(12);
+				LocalDateTime datetime4 = datetime1.plusHours(18);
+				Orders order1 = new Orders(buyer1, datetime1);
+				Orders order2 = new Orders(buyer1, datetime2);
+				Orders order3 = new Orders(buyer1, datetime2);
+				Orders order4 = new Orders(buyer1, datetime2);
+				Orders order5 = new Orders(buyer1, datetime2);
+				Orders order6 = new Orders(buyer1, datetime2);
+				Orders order7 = new Orders(buyer1, datetime3);
+				Orders order8 = new Orders(buyer1, datetime3);
+				Orders order9 = new Orders(buyer1, datetime3);
+				Orders order10 = new Orders(buyer1, datetime4);
+				Orders order11 = new Orders(buyer1, datetime4);
+				ordersRepo.save(order1);	ordersRepo.save(order2);
+				ordersRepo.save(order3);ordersRepo.save(order4);
+				ordersRepo.save(order5);ordersRepo.save(order6);
+				ordersRepo.save(order7);ordersRepo.save(order8);
+				ordersRepo.save(order9);ordersRepo.save(order10);	
+				ordersRepo.save(order11);
+			}			
+		}	
 
-	}
+		LOGGER.info("----------------------------Database populated successfully!");	        
+    }
 }
