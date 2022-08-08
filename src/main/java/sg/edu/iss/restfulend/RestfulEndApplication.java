@@ -5,10 +5,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
 import sg.edu.iss.restfulend.Helper.DateTimeConverter;
 import sg.edu.iss.restfulend.Helper.ProductCategories;
 import sg.edu.iss.restfulend.Helper.StreamStatus;
@@ -16,7 +12,6 @@ import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 @SpringBootApplication
@@ -172,24 +167,5 @@ public class RestfulEndApplication {
 			
 		LOGGER.info("----------------------------populating database");
 
-	}	
-	//to address CORS error when running on local host
-	@Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        corsConfiguration.setAllowedHeaders(Arrays.asList("Origin","Access-Control-Allow-Origin",
-                "Content-Type","Accept","Authorization","Origin,Accept","X-Requested-With",
-                "Access-Control-Request-Method","Access-Control-Request-Headers"));
-        corsConfiguration.setExposedHeaders(Arrays.asList("Origin","Content-Type","Accept","Authorization",
-                "Access-Control-Allow-Origin","Access-Control-Allow-Origin","Access-Control-Allow-Credentials"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET","PUT","POST","DELETE","OPTIONS"));
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-        return new CorsFilter(urlBasedCorsConfigurationSource);
-        
-    }
-
-
+	}
 }
