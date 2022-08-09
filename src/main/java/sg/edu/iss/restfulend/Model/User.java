@@ -42,6 +42,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Orders> ordersHistory;
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<StreamLog> streamlogs;    
 
     public User(String firstName, String lastName, String address, String username, String password, Boolean isVerified) {
         this.firstName = firstName;

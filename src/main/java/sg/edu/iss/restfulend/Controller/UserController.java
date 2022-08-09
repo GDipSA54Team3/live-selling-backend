@@ -190,4 +190,16 @@ public class UserController {
         Optional<ChannelStream> channel = channelRepo.findById(id);
         return channel.isPresent() ? channel.get() : null;
     }
+    
+    @GetMapping("/upcomingstreams/{userId}")
+    public ResponseEntity<List<Stream>> getThreeClosestUserStreamsPending(@PathVariable("userId") String userId) {
+        return new ResponseEntity<>(streamRepo.getThreeClosestStreamsByUserId(userId), HttpStatus.OK);
+    }
+    
+    @GetMapping("/upcomingstreamcount/{userId}")
+    public String PendingStreamCountByUser(@PathVariable("userId") String userId) {
+    	Integer pendingStreamCount = streamRepo.getPendingStreamCountByUser(userId);
+        return String.valueOf(pendingStreamCount);
+    }    
+    
 }

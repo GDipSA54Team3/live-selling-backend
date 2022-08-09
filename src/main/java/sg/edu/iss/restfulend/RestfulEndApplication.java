@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import sg.edu.iss.restfulend.Helper.DateTimeConverter;
+import sg.edu.iss.restfulend.Helper.OrderStatus;
 import sg.edu.iss.restfulend.Helper.ProductCategories;
 import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.*;
@@ -190,17 +191,17 @@ public class RestfulEndApplication {
 				LocalDateTime datetime2 = datetime1.plusHours(6);
 				LocalDateTime datetime3 = datetime1.plusHours(12);
 				LocalDateTime datetime4 = datetime1.plusHours(18);
-				Orders order1 = new Orders(buyer1, datetime1);
-				Orders order2 = new Orders(buyer1, datetime2);
-				Orders order3 = new Orders(buyer1, datetime2);
-				Orders order4 = new Orders(buyer1, datetime2);
-				Orders order5 = new Orders(buyer1, datetime2);
-				Orders order6 = new Orders(buyer1, datetime2);
-				Orders order7 = new Orders(buyer1, datetime3);
-				Orders order8 = new Orders(buyer1, datetime3);
-				Orders order9 = new Orders(buyer1, datetime3);
-				Orders order10 = new Orders(buyer1, datetime4);
-				Orders order11 = new Orders(buyer1, datetime4);
+				Orders order1 = new Orders(buyer1, datetime1, OrderStatus.CONFIRMED);
+				Orders order2 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
+				Orders order3 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
+				Orders order4 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
+				Orders order5 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
+				Orders order6 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
+				Orders order7 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED);
+				Orders order8 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED);
+				Orders order9 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED);
+				Orders order10 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED);
+				Orders order11 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED);
 				ordersRepo.save(order1);	ordersRepo.save(order2);
 				ordersRepo.save(order3);ordersRepo.save(order4);
 				ordersRepo.save(order5);ordersRepo.save(order6);
@@ -208,7 +209,16 @@ public class RestfulEndApplication {
 				ordersRepo.save(order9);ordersRepo.save(order10);	
 				ordersRepo.save(order11);
 			}			
-		}	
+		}
+		//populate Jame's streamlog for (initilal dashboard display)
+		StreamLog streamlog1 = new StreamLog(50, s2, null ); //Jame's streamlog 
+		StreamLog streamlog2 = new StreamLog(40, s2, null ); //Jame'sanother streamlog
+		StreamLog streamlog3 = new StreamLog(25, s1, null ); //Melinda's streamlog
+		StreamLog streamlog4 = new StreamLog(30, s1, null ); //Melinda's another streamlog
+		StreamLog streamlog5 = new StreamLog(250, s1, null ); //Melinda's another streamlog
+		logRepo.save(streamlog1);	logRepo.save(streamlog2);
+		logRepo.save(streamlog3);logRepo.save(streamlog4);
+		logRepo.save(streamlog5);		
 
 		LOGGER.info("----------------------------Database populated successfully!");	        
     }
