@@ -3,6 +3,8 @@ package sg.edu.iss.restfulend.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sg.edu.iss.restfulend.Helper.OrderStatus;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,14 +25,17 @@ public class Orders {
     private User user;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDateTime orderDateTime;
+    private OrderStatus status; 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<OrderProduct> orderProduct;
 
-    public Orders(User user, LocalDateTime orderDateTime) {
+    public Orders(User user, LocalDateTime orderDateTime, OrderStatus status) {
         this.orderDateTime = orderDateTime;
         this.orderProduct = new ArrayList<>();
         this.user = user;
+        this.status = status;
     }
+    
 }
