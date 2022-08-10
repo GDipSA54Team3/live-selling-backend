@@ -21,12 +21,10 @@ public class User {
     private String firstName;
     @Column(length = 100)
     private String lastName;
+    //Removed @JsonIgnore for registration
     @Column(length = 200)
-    @JsonIgnore
     private String address;
-    @JsonIgnore
     private String username;
-    @JsonIgnore
     private String password;
     private Boolean isVerified;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
