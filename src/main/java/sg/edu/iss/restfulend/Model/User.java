@@ -31,9 +31,6 @@ public class User {
     private Boolean isVerified;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Cart cart;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
     private ChannelStream channel;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
