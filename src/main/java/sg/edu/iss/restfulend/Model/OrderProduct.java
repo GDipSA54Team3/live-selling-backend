@@ -18,25 +18,18 @@ public class OrderProduct {
 	@GenericGenerator(name="system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     private int quantity;
-    
     @ManyToOne
     private Orders order;
     @ManyToOne
     private Product product;
-    @ManyToOne
-    private ChannelStream channel;
-    @ManyToOne
-    private Cart cart;
 
     public OrderProduct(int quantity) {
         this.quantity = quantity;
     }
 
-    public OrderProduct(int quantity, Product product, Orders order, ChannelStream channel, Cart cart) {
+    public OrderProduct(int quantity, Product product, Orders order) {
         this.quantity = quantity;
         this.product = product;
-        this.channel = channel;
-        this.cart = cart;
         this.order = order;
     }
 }

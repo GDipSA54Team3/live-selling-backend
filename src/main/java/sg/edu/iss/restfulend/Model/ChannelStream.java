@@ -29,7 +29,7 @@ public class ChannelStream {
     private List<Rating> ratings;
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<OrderProduct> orders;
+    private List<Orders> orders;
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Stream> streams;

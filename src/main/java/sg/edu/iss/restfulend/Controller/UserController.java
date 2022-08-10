@@ -21,8 +21,6 @@ public class UserController {
     @Autowired
     UserRepository userRepo;
     @Autowired
-    CartRepository cartRepo;
-    @Autowired
     ChannelStreamRepository channelRepo;
     @Autowired
     MessageRepository messageRepo;
@@ -78,58 +76,6 @@ public class UserController {
     public ResponseEntity<ChannelStream> selectChannel(@PathVariable("channelId") String channelId) {
         ChannelStream selected = findChannelById(channelId);
         return selected != null ? new ResponseEntity<>(selected, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PutMapping("/addtocart/{userId}/{prodId}/{qty}")
-    public ResponseEntity<OrderProduct> addToCart(@PathVariable("prodId") String prodId, @PathVariable("userId") String userId,
-                                                  @PathVariable("qty") int qty) {
-        if (orderProductRepo.findExistInCart(userId, prodId) != null) {
-            OrderProduct existingProdInCart = orderProductRepo.findExistInCart(userId, prodId);
-            int oldQty = existingProdInCart.getQuantity();
-            existingProdInCart.setQuantity(oldQty + qty);
-            return new ResponseEntity<>(orderProductRepo.save(existingProdInCart), HttpStatus.OK);
-        } else {
-            OrderProduct addProdToCart = new OrderProduct(qty);
-            addProdToCart.setCart(findUserById(userId).getCart());
-            addProdToCart.setProduct(findProductById(prodId));
-            return new ResponseEntity<>(orderProductRepo.save(addProdToCart), HttpStatus.OK);
-        }
-    }
-
-    @GetMapping("/viewcart/{userId}")
-    public ResponseEntity<List<OrderProduct>> viewCart(@PathVariable("userId") String userId) {
-        return new ResponseEntity<>(findUserById(userId).getCart().getOrderProduct(), HttpStatus.OK);
-    }
-
-    @PutMapping("/editcartqty/{orderProdId}/{qty}")
-    public ResponseEntity<OrderProduct> editCartQty(@PathVariable("orderProdId") String orderProdId, @PathVariable("qty") int qty) {
-        OrderProduct op = findOrderProductById(orderProdId);
-        op.setQuantity(qty);
-        return new ResponseEntity<>(orderProductRepo.save(op), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/removecartitem/{orderProdId}")
-    public ResponseEntity<HttpStatus> removeCartItem(@PathVariable("orderProdId") String orderProdId) {
-        try {
-            orderProductRepo.deleteById(orderProdId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
-    }
-
-    //NOT WORKING
-    @DeleteMapping("/emptycart/{userId}")
-    public ResponseEntity<HttpStatus> emptyCart(@PathVariable("userId") String userId) {
-        try {
-            List<OrderProduct> cartItems = findUserById(userId).getCart().getOrderProduct();
-            for (OrderProduct item : cartItems) {
-                orderProductRepo.delete(item);
-            }
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
     }
 
     @PostMapping("/addstream/{userId}")

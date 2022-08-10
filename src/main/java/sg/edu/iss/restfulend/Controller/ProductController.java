@@ -19,8 +19,6 @@ public class ProductController {
     @Autowired
     UserRepository userRepo;
     @Autowired
-    CartRepository cartRepo;
-    @Autowired
     ChannelStreamRepository channelRepo;
     @Autowired
     MessageRepository messageRepo;

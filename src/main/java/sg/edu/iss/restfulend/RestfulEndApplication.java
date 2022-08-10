@@ -11,10 +11,10 @@ import sg.edu.iss.restfulend.Helper.ProductCategories;
 import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -23,8 +23,6 @@ public class RestfulEndApplication {
 
 	@Autowired
 	UserRepository UserRepo;
-	@Autowired
-	CartRepository cartRepo;
 	@Autowired
 	ChannelStreamRepository channelRepo;
 	@Autowired
@@ -60,7 +58,6 @@ public class RestfulEndApplication {
 
 	public void clearDatabase() {
 		UserRepo.deleteAll();
-		cartRepo.deleteAll();
 		channelRepo.deleteAll();
 		messageRepo.deleteAll();
 		orderProductRepo.deleteAll();
@@ -79,8 +76,6 @@ public class RestfulEndApplication {
 		
 		User s1 = new User("Amanda", "Chong", "Upper Paya Lebar West", "amandachong", "amandachong", true);
 		UserRepo.save(s1);
-		Cart cc1 = new Cart(s1);
-		cartRepo.save(cc1);
 		ChannelStream cs1 = new ChannelStream("Better Living", s1);
 		channelRepo.save(cs1);
 		Product pcs1_1 = new Product("Aloe Vera Gel", ProductCategories.HEALTH, "Healing gel from South Korea. Used by BTS.", 50.00, 100, cs1);
@@ -94,8 +89,6 @@ public class RestfulEndApplication {
 
 		User s2 = new User("James", "Seah", "Punggol West Avenue 2", "jamesseah", "jamesseah", true);
 		UserRepo.save(s2);
-		Cart cc2 = new Cart(s2);
-		cartRepo.save(cc2);
 		ChannelStream cs2 = new ChannelStream("HighTech Gadgets", s2);
 		channelRepo.save(cs2);
 		Product pcs2_1 = new Product("iPhone 22", ProductCategories.TECHNOLOGY, "Latest iPhone from the future", 1500.00, 2, cs2);
@@ -109,49 +102,31 @@ public class RestfulEndApplication {
 
 		User b1 = new User("Tom", "Tan", "Chua Chu Kang Avenue 2", "tomtan", "tomtan", false);
 		UserRepo.save(b1);
-		Cart c1 = new Cart(b1);
-		cartRepo.save(c1);
 		ChannelStream csb1 = new ChannelStream("tomtan", b1);
 		channelRepo.save(csb1);
-		OrderProduct op1_1 = new OrderProduct(1, pcs1_1, null, null, c1);
-		orderProductRepo.save(op1_1);
-		OrderProduct op1_2 = new OrderProduct(1, pcs1_2, null, null, c1);
-		orderProductRepo.save(op1_2);
-		OrderProduct op1_3 = new OrderProduct(1, pcs2_3, null, null, c1);
-		orderProductRepo.save(op1_3);
 
 		User b2 = new User("Melinda", "Mak", "Woodlands Avenue 2", "melmak", "melmak", false);
 		UserRepo.save(b2);
-		Cart c2 = new Cart(b2);
-		cartRepo.save(c2);
 		ChannelStream csb2 = new ChannelStream("melmak", b2);
 		channelRepo.save(csb2);
 
 		User b3 = new User("Joe", "Lim", "Upper Changi Road 2", "joelim", "joelim", false);
 		UserRepo.save(b3);
-		Cart c3 = new Cart(b3);
-		cartRepo.save(c3);
 		ChannelStream csb3 = new ChannelStream("joelim", b3);
 		channelRepo.save(csb3);
 
 		User b4 = new User("Jess", "Park", "Coorperation Drive Avenue 2", "jesspark", "jesspark", false);
 		UserRepo.save(b4);
-		Cart c4 = new Cart(b4);
-		cartRepo.save(c4);
 		ChannelStream csb4 = new ChannelStream("jesspark", b4);
 		channelRepo.save(csb4);
 
 		User b5 = new User("Peter", "Pang", "Sentosa Cove 2", "peterpang", "peterpang", false);
 		UserRepo.save(b5);
-		Cart c5 = new Cart(b5);
-		cartRepo.save(c5);
 		ChannelStream csb5 = new ChannelStream("peterpang", b5);
 		channelRepo.save(csb5);
 
 		User b6 = new User("Sarah", "Sim", "Sims Avenue 2", "sarahsim", "sarahsim", false);
 		UserRepo.save(b6);
-		Cart c6 = new Cart(b6);
-		cartRepo.save(c6);
 		ChannelStream csb6 = new ChannelStream("sarahsim", b6);
 		channelRepo.save(csb6);
 		

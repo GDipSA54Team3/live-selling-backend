@@ -26,7 +26,9 @@ public class Orders {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDateTime orderDateTime;
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;  
+    private OrderStatus status;
+    @ManyToOne
+    private ChannelStream channel;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonIgnore
