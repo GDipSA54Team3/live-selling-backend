@@ -25,6 +25,7 @@ public class Orders {
     private User user;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDateTime orderDateTime;
+    @Enumerated(EnumType.STRING)
     private OrderStatus status; 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

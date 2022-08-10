@@ -175,7 +175,8 @@ public class RestfulEndApplication {
 		LOGGER.info("---------------------------This will take a while. Please wait" );
 		
 		User buyer1 = new User("Jack", "Lee", "Chua Chu Kang Avenue 2", "jacklee", "jacklee", false); //buyer
-		UserRepo.save(buyer1);
+		User buyer2 = new User("Jack", "Mann", "Chua Chu Kang Avenue 8", "jackmann", "jackmann", false); //buyer
+		UserRepo.save(buyer1);UserRepo.save(buyer2);
 		LocalDateTime startDateTime = LocalDateTime.of(2022,Month.JULY,1,1,30,40,50000); //2022-07-08T01:30:40.000050
 		LocalDateTime now = LocalDateTime.now();
 		Integer daysBetween = (int)Duration.between(startDateTime, now).toDays();
@@ -218,8 +219,26 @@ public class RestfulEndApplication {
 		StreamLog streamlog5 = new StreamLog(250, s1, null ); //Melinda's another streamlog
 		logRepo.save(streamlog1);	logRepo.save(streamlog2);
 		logRepo.save(streamlog3);logRepo.save(streamlog4);
-		logRepo.save(streamlog5);		
+		logRepo.save(streamlog5);
+		
+		//	Populate some pending orders
+		LocalDateTime currTime = LocalDateTime.now();
+		
+		Orders order12 = new Orders(buyer1, currTime, OrderStatus.PENDING);
+		Cart cart1 = new Cart(buyer1);
+		cartRepo.save(cart1);
+		OrderProduct orderprod1 = new OrderProduct(10, pcs2_1, order12, cs2, cart1);
+		order12.getOrderProduct().add(orderprod1);
+		ordersRepo.saveAndFlush(order12);
+		
+		Orders order13 = new Orders(buyer1, currTime, OrderStatus.PENDING);
+		Cart cart2 = new Cart(buyer2);
+		cartRepo.save(cart2);
+		OrderProduct orderprod2 = new OrderProduct(10, pcs2_1, order13, cs2, cart2);
+		order13.getOrderProduct().add(orderprod2);
+		ordersRepo.saveAndFlush(order13);
 
+		
 		LOGGER.info("----------------------------Database populated successfully!");	        
     }
 }
