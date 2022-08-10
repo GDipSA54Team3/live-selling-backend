@@ -12,6 +12,7 @@ import sg.edu.iss.restfulend.Repository.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins= "*")
 @RestController
@@ -77,6 +78,19 @@ public class UserController {
         ChannelStream selected = findChannelById(channelId);
         return selected != null ? new ResponseEntity<>(selected, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    
+    @GetMapping("/channels/finduser/{userId}")
+    public ResponseEntity<ChannelStream> findChannelByUserId(@PathVariable("userId") String userId) {
+    	List<ChannelStream> allChannels = 
+    	channelRepo.findAll()
+    		.stream()
+    		.filter(x -> x.getUser().getId().equals(userId))
+    		.collect(Collectors.toList());
+    	
+        ChannelStream selected = allChannels.get(0);
+        return selected != null ? new ResponseEntity<>(selected, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    
 
     @PostMapping("/addstream/{userId}")
     public ResponseEntity<Stream> addNewStream(@RequestBody Stream newStream, @PathVariable("userId") String userId) {
