@@ -34,11 +34,12 @@ public class Orders {
     @JsonIgnore
     private List<OrderProduct> orderProduct;
 
-    public Orders(User user, LocalDateTime orderDateTime, OrderStatus status) {
+    public Orders(User user, LocalDateTime orderDateTime, OrderStatus status, ChannelStream channel) {
         this.orderDateTime = orderDateTime;
         this.orderProduct = new ArrayList<>();
         this.user = user;
         this.status = status;
+        this.channel=channel;
     }
     
 }
