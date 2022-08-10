@@ -12,6 +12,7 @@ import sg.edu.iss.restfulend.Repository.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins= "*")
 @RestController
@@ -77,6 +78,19 @@ public class UserController {
         ChannelStream selected = findChannelById(channelId);
         return selected != null ? new ResponseEntity<>(selected, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    
+    @GetMapping("/channels/finduser/{userId}")
+    public ResponseEntity<ChannelStream> findChannelByUserId(@PathVariable("userId") String userId) {
+    	List<ChannelStream> allChannels = 
+    	channelRepo.findAll()
+    		.stream()
+    		.filter(x -> x.getUser().getId().equals(userId))
+    		.collect(Collectors.toList());
+    	
+        ChannelStream selected = allChannels.get(0);
+        return selected != null ? new ResponseEntity<>(selected, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    
 
     @PostMapping("/addstream/{userId}")
     public ResponseEntity<Stream> addNewStream(@RequestBody Stream newStream, @PathVariable("userId") String userId) {
@@ -88,6 +102,18 @@ public class UserController {
         }
     }
 
+    //Gab's API for Registration
+    @PostMapping("/register/{channelName}")
+    public ResponseEntity<User> addNewUser(@RequestBody User newUser, @PathVariable("channelName") String channelName ) {
+        try {
+        	User user = userRepo.save(new User(newUser.getFirstName(), newUser.getLastName(), newUser.getAddress(), newUser.getUsername(), newUser.getPassword(), newUser.getIsVerified()));
+        	ChannelStream channel = channelRepo.save(new ChannelStream(channelName, user));
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+    
     @PutMapping("/editstream/{streamId}")
     public ResponseEntity<Stream> editStream(@RequestBody Stream stream, @PathVariable("streamId") String streamId) {
         try {
