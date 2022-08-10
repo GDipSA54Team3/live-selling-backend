@@ -167,17 +167,17 @@ public class RestfulEndApplication {
 				LocalDateTime datetime2 = datetime1.plusHours(6);
 				LocalDateTime datetime3 = datetime1.plusHours(12);
 				LocalDateTime datetime4 = datetime1.plusHours(18);
-				Orders order1 = new Orders(buyer1, datetime1, OrderStatus.CONFIRMED);
-				Orders order2 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
-				Orders order3 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
-				Orders order4 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
-				Orders order5 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
-				Orders order6 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED);
-				Orders order7 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED);
-				Orders order8 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED);
-				Orders order9 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED);
-				Orders order10 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED);
-				Orders order11 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED);
+				Orders order1 = new Orders(buyer1, datetime1, OrderStatus.CONFIRMED, cs2);
+				Orders order2 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2);
+				Orders order3 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2);
+				Orders order4 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2);
+				Orders order5 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2);
+				Orders order6 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2);
+				Orders order7 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2);
+				Orders order8 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2);
+				Orders order9 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2);
+				Orders order10 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED, cs2);
+				Orders order11 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED, cs2);
 				ordersRepo.save(order1);	ordersRepo.save(order2);
 				ordersRepo.save(order3);ordersRepo.save(order4);
 				ordersRepo.save(order5);ordersRepo.save(order6);
@@ -199,17 +199,13 @@ public class RestfulEndApplication {
 		//	Populate some pending orders
 		LocalDateTime currTime = LocalDateTime.now();
 		
-		Orders order12 = new Orders(buyer1, currTime, OrderStatus.PENDING);
-		Cart cart1 = new Cart(buyer1);
-		cartRepo.save(cart1);
-		OrderProduct orderprod1 = new OrderProduct(10, pcs2_1, order12, cs2, cart1);
+		Orders order12 = new Orders(buyer1, currTime, OrderStatus.PENDING, cs2);		
+		OrderProduct orderprod1 = new OrderProduct(10, pcs2_1, order12);
 		order12.getOrderProduct().add(orderprod1);
 		ordersRepo.saveAndFlush(order12);
 		
-		Orders order13 = new Orders(buyer1, currTime, OrderStatus.PENDING);
-		Cart cart2 = new Cart(buyer2);
-		cartRepo.save(cart2);
-		OrderProduct orderprod2 = new OrderProduct(10, pcs2_1, order13, cs2, cart2);
+		Orders order13 = new Orders(buyer1, currTime, OrderStatus.PENDING, cs2);
+		OrderProduct orderprod2 = new OrderProduct(10, pcs2_1, order13);
 		order13.getOrderProduct().add(orderprod2);
 		ordersRepo.saveAndFlush(order13);
 
