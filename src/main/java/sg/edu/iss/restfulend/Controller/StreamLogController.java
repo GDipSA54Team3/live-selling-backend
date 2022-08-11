@@ -1,6 +1,11 @@
 package sg.edu.iss.restfulend.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import sg.edu.iss.restfulend.Model.ChannelStream;
+import sg.edu.iss.restfulend.Model.User;
 import sg.edu.iss.restfulend.Repository.*;
 import java.text.DecimalFormat;
 
@@ -36,5 +41,22 @@ public class StreamLogController {
         }   
         	//the user has no rating yet        	
             return "0";        
-    }    
+    }
+    
+    /* Setting up for StreamLog writing
+    
+    @PostMapping("/newStreamLog/{channelName}")
+    public ResponseEntity<StreamLog> addNewLog(@RequestBody User newUser, @PathVariable("channelName") String channelName ) {
+        try {
+        	User user = userRepo.save(new User(newUser.getFirstName(), newUser.getLastName(), newUser.getAddress(), newUser.getUsername(), newUser.getPassword(), newUser.getIsVerified()));
+        	ChannelStream channel = channelRepo.save(new ChannelStream(channelName, user));
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+    
+     
+     */
+    
 }
