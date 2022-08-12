@@ -4,11 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import sg.edu.iss.restfulend.Model.OrderProduct;
 import sg.edu.iss.restfulend.Model.Product;
+import sg.edu.iss.restfulend.Model.Stream;
 import sg.edu.iss.restfulend.Repository.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @CrossOrigin(origins= "*")
@@ -50,6 +54,17 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    @GetMapping("/products/getchannelproducts/{channelId}")
+    public ResponseEntity<List<Product>> getAllProductsInStore(@PathVariable("channelId") String channelId) {
+        List<Product> channelProducts = productRepo.findAll()
+        		.stream()
+        		.filter(product -> product.getChannel().getId().equals(channelId))
+        		.collect(Collectors.toList());
+    	
+
+       return new ResponseEntity<>(channelProducts, HttpStatus.OK);
+    }
 
     @PutMapping("/products/edit/{prodId}")
     public ResponseEntity<Product> editProduct(@PathVariable("prodId") String prodId, @RequestBody Product product) {
@@ -68,8 +83,9 @@ public class ProductController {
     }
 
     @PostMapping("/addtostore/")
-    public ResponseEntity<Product> addToStore(Product product) {
+    public ResponseEntity<Product> addToStore(@RequestBody Product product) {
         try {
+        	System.out.println(product.getName());
             Product p = productRepo.save(new Product(product.getName(), product.getCategory(), product.getDescription(),
                     product.getPrice(), product.getQuantity(), product.getChannel()));
             return new ResponseEntity<>(p, HttpStatus.CREATED);
@@ -98,6 +114,15 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 
         }
+    }
+    
+    @GetMapping("/order/{orderProductId}")
+    public ResponseEntity<Product> getProductFromOrderProduct(@PathVariable("orderProductId") String orderProductId) {
+    	
+    	Optional<OrderProduct> orderProduct = orderProductRepo.findById(orderProductId);
+        Product product =  orderProduct.isPresent() ? orderProduct.get().getProduct() : null;
+    	
+    	return new ResponseEntity<>(product, HttpStatus.OK);
     }
 }
 

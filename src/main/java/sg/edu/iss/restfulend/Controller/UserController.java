@@ -49,6 +49,15 @@ public class UserController {
     public ResponseEntity<List<Stream>> getAllUserStreams(@PathVariable("userId") String userId) {
         return new ResponseEntity<>(channelRepo.getStreamsByUserId(userId), HttpStatus.OK);
     }
+    
+    @GetMapping("/notuserstreams/{channelId}")
+    public ResponseEntity<List<Stream>> getAllStreamsNotByUser(@PathVariable("channelId") String channelId) {
+    	List<Stream> notByUser = streamRepo.findAll()
+    			.stream()
+    			.filter(stream -> !stream.getChannel().getId().equals(channelId))
+    			.collect(Collectors.toList());
+        return new ResponseEntity<>(notByUser, HttpStatus.OK);
+    }
 
     @GetMapping("/userstreamspending/{userId}")
     public ResponseEntity<List<Stream>> getAllUserStreamsPending(@PathVariable("userId") String userId) {
@@ -103,12 +112,23 @@ public class UserController {
     }
 
     //Gab's API for Registration
-    @PostMapping("/register/{channelName}")
-    public ResponseEntity<User> addNewUser(@RequestBody User newUser, @PathVariable("channelName") String channelName ) {
+    @PostMapping("/register/{channelName}/{username}/{password}/{address}")
+    public ResponseEntity<User> addNewUser(@RequestBody User newUser, @PathVariable("username") String username, @PathVariable("password") String password , @PathVariable("address") String address, @PathVariable("channelName") String channelName) {
         try {
-        	User user = userRepo.save(new User(newUser.getFirstName(), newUser.getLastName(), newUser.getAddress(), newUser.getUsername(), newUser.getPassword(), newUser.getIsVerified()));
-        	ChannelStream channel = channelRepo.save(new ChannelStream(channelName, user));
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
+        	//add check for existing user
+        	List<User> userList = userRepo.findAll()
+        			.stream()
+        			.filter(user -> user.getUsername().equals(username))
+        			.collect(Collectors.toList());
+        	
+        	if(userList.size() < 1) {
+        		User user = userRepo.save(new User(newUser.getFirstName(), newUser.getLastName(), address, username, password, newUser.getIsVerified()));
+            	ChannelStream channel = channelRepo.save(new ChannelStream(channelName, user));
+                return new ResponseEntity<>(user, HttpStatus.CREATED);
+        	} else {
+        		return new ResponseEntity<>(HttpStatus.CONFLICT);
+        	}
+        	
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sg.edu.iss.restfulend.Helper.OrderStatus;
 import sg.edu.iss.restfulend.Helper.UserSortByName;
+import sg.edu.iss.restfulend.Model.OrderProduct;
 import sg.edu.iss.restfulend.Model.Orders;
 import sg.edu.iss.restfulend.Model.User;
 import sg.edu.iss.restfulend.Repository.*;
@@ -23,6 +24,8 @@ public class OrderController {
 	
     @Autowired
     OrdersRepository ordersRepo;
+    @Autowired
+    OrderProductRepository orderProdRepo;
   
     @GetMapping("/pendingorders/{userId}")
     public String getPendingOrdersCount(@PathVariable("userId") String userId) {    	
@@ -41,7 +44,7 @@ public class OrderController {
         return new ResponseEntity<>(allPurchases, HttpStatus.OK);
     }
     
-    @GetMapping("/orders/channelorders/{channelId}")
+    @GetMapping("/channelorders/{channelId}")
     public ResponseEntity<List<Orders>> getChannelOrders(@PathVariable("channelId") String channelId) {
         List<Orders> allOrders = ordersRepo.findAll()
         .stream()
@@ -50,6 +53,16 @@ public class OrderController {
         .collect(Collectors.toList());
         
         return new ResponseEntity<>(allOrders, HttpStatus.OK);
+    }
+    
+    @GetMapping("/products/{orderId}")
+    public ResponseEntity<List<OrderProduct>> getProductsInOrder(@PathVariable("orderId") String orderId){
+    	List<OrderProduct> productsInOrder = orderProdRepo.findAll()
+    			.stream()
+    			.filter(orderProduct -> orderProduct.getOrder().getId().equals(orderId))
+    			.collect(Collectors.toList());
+    	
+    	return new ResponseEntity<>(productsInOrder, HttpStatus.OK);
     }
 
 }
