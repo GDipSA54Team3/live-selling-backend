@@ -178,6 +178,11 @@ public class ProductController {
 
         }
     }
+
+    @PostMapping("/searchproduct/{userId}")
+    public ResponseEntity<List<Product>> searchProduct(@RequestBody Product search, @PathVariable("userId") String userId) {
+        return new ResponseEntity<>(productRepo.findClosestProductsByNameAndUserId(search.getSearch(), userId), HttpStatus.OK);
+    }
 }
 
 
