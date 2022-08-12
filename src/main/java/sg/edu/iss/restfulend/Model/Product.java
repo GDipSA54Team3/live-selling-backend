@@ -28,6 +28,8 @@ public class Product {
     private int quantity;
     @Transient
     private String cat;
+    @Transient
+    private String search;
 
     @ManyToOne
     private ChannelStream channel;
