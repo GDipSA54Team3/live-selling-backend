@@ -55,22 +55,19 @@ public class StreamLogController {
 
     
     @PostMapping("/newstreamlog/{sellerId}/{streamId}")
-    public ResponseEntity<List<StreamLog>> addNewLogList(@RequestBody List<StreamLog> streamLogList, @PathVariable("sellerId") String sellerId, @PathVariable("streamId") String streamId) {
+    public ResponseEntity<StreamLog> addNewLogList(@RequestBody StreamLog streamLog, @PathVariable("sellerId") String sellerId, @PathVariable("streamId") String streamId) {
     	Optional<User> user = userRepo.findById(sellerId);
         User seller = user.isPresent() ? user.get() : null;
         
         Optional<Stream> sampleStream = streamRepo.findById(streamId);
         Stream stream = sampleStream.isPresent() ? sampleStream.get() : null;
             	
-        List<StreamLog> newStreamLog = new ArrayList<StreamLog>();
     	try {
-        	for (StreamLog log : streamLogList){
         		
-        		StreamLog newLog = new StreamLog(log.getNumLikes(), seller, stream);
-        		newStreamLog.add(newLog);
-        		logRepo.save(newLog);
-        	}
-            return new ResponseEntity<>(newStreamLog, HttpStatus.CREATED);
+        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream);
+        	logRepo.save(newLog);
+        	return new ResponseEntity<StreamLog>(newLog, HttpStatus.CREATED);
+        	
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
