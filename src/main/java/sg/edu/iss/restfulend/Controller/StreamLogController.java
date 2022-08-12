@@ -5,9 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import sg.edu.iss.restfulend.Model.ChannelStream;
+import sg.edu.iss.restfulend.Model.Stream;
+import sg.edu.iss.restfulend.Model.StreamLog;
 import sg.edu.iss.restfulend.Model.User;
 import sg.edu.iss.restfulend.Repository.*;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 
@@ -20,6 +25,10 @@ public class StreamLogController {
 
     @Autowired
     StreamLogRepository logRepo;
+    @Autowired
+    UserRepository userRepo;
+    @Autowired
+    StreamRepository streamRepo;
 
   
     @GetMapping("/avgstreamlikes")
@@ -43,20 +52,30 @@ public class StreamLogController {
             return "0";        
     }
     
-    /* Setting up for StreamLog writing
+
     
-    @PostMapping("/newStreamLog/{channelName}")
-    public ResponseEntity<StreamLog> addNewLog(@RequestBody User newUser, @PathVariable("channelName") String channelName ) {
-        try {
-        	User user = userRepo.save(new User(newUser.getFirstName(), newUser.getLastName(), newUser.getAddress(), newUser.getUsername(), newUser.getPassword(), newUser.getIsVerified()));
-        	ChannelStream channel = channelRepo.save(new ChannelStream(channelName, user));
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
+    @PostMapping("/newstreamlog/{sellerId}/{streamId}")
+    public ResponseEntity<List<StreamLog>> addNewLogList(@RequestBody List<StreamLog> streamLogList, @PathVariable("sellerId") String sellerId, @PathVariable("streamId") String streamId) {
+    	Optional<User> user = userRepo.findById(sellerId);
+        User seller = user.isPresent() ? user.get() : null;
+        
+        Optional<Stream> sampleStream = streamRepo.findById(streamId);
+        Stream stream = sampleStream.isPresent() ? sampleStream.get() : null;
+            	
+        List<StreamLog> newStreamLog = new ArrayList<StreamLog>();
+    	try {
+        	for (StreamLog log : streamLogList){
+        		
+        		StreamLog newLog = new StreamLog(log.getNumLikes(), seller, stream);
+        		newStreamLog.add(newLog);
+        		logRepo.save(newLog);
+        	}
+            return new ResponseEntity<>(newStreamLog, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
     }
-    
      
-     */
+    
     
 }

@@ -5,11 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.iss.restfulend.Helper.ProductCategories;
+import sg.edu.iss.restfulend.Model.OrderProduct;
 import sg.edu.iss.restfulend.Model.Product;
+import sg.edu.iss.restfulend.Model.Stream;
 import sg.edu.iss.restfulend.Repository.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @CrossOrigin(origins= "*")
@@ -55,6 +58,17 @@ public class ProductController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+    
+    @GetMapping("/products/getchannelproducts/{channelId}")
+    public ResponseEntity<List<Product>> getAllProductsInStore(@PathVariable("channelId") String channelId) {
+        List<Product> channelProducts = productRepo.findAll()
+        		.stream()
+        		.filter(product -> product.getChannel().getId().equals(channelId))
+        		.collect(Collectors.toList());
+    	
+
+       return new ResponseEntity<>(channelProducts, HttpStatus.OK);
     }
 
     @PutMapping("/editproduct/{prodId}")
@@ -182,6 +196,15 @@ public class ProductController {
     @PostMapping("/searchproduct/{userId}")
     public ResponseEntity<List<Product>> searchProduct(@RequestBody Product search, @PathVariable("userId") String userId) {
         return new ResponseEntity<>(productRepo.findClosestProductsByNameAndUserId(search.getSearch(), userId), HttpStatus.OK);
+    }
+    
+    @GetMapping("/order/{orderProductId}")
+    public ResponseEntity<Product> getProductFromOrderProduct(@PathVariable("orderProductId") String orderProductId) {
+    	
+    	Optional<OrderProduct> orderProduct = orderProductRepo.findById(orderProductId);
+        Product product =  orderProduct.isPresent() ? orderProduct.get().getProduct() : null;
+    	
+    	return new ResponseEntity<>(product, HttpStatus.OK);
     }
 }
 
