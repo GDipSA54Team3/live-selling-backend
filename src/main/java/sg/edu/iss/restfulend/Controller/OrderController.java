@@ -1,17 +1,15 @@
 package sg.edu.iss.restfulend.Controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import sg.edu.iss.restfulend.Helper.OrderStatus;
-import sg.edu.iss.restfulend.Helper.UserSortByName;
 import sg.edu.iss.restfulend.Model.OrderProduct;
 import sg.edu.iss.restfulend.Model.Orders;
-import sg.edu.iss.restfulend.Model.User;
-import sg.edu.iss.restfulend.Repository.*;
-import java.text.DecimalFormat;
-import java.util.Comparator;
+import sg.edu.iss.restfulend.Repository.OrderProductRepository;
+import sg.edu.iss.restfulend.Repository.OrdersRepository;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
