@@ -124,11 +124,20 @@ public class RestfulEndApplication {
 		UserRepo.save(b5);
 		ChannelStream csb5 = new ChannelStream("peterpang", b5);
 		channelRepo.save(csb5);
+		Orders o2 = new Orders(b5, LocalDateTime.now(), OrderStatus.PENDING, cs2);
+		ordersRepo.save(o2);
+		OrderProduct op2 = new OrderProduct(1,pcs2_1, o2);
+		orderProductRepo.save(op2);
 
 		User b6 = new User("Sarah", "Sim", "Sims Avenue 2", "sarahsim", "sarahsim", false);
 		UserRepo.save(b6);
 		ChannelStream csb6 = new ChannelStream("sarahsim", b6);
 		channelRepo.save(csb6);
+		Orders o1 = new Orders(b6, LocalDateTime.now(), OrderStatus.PENDING, cs2);
+		ordersRepo.save(o1);
+		OrderProduct op1 = new OrderProduct(1,pcs2_2, o1);
+		orderProductRepo.save(op1);
+
 		
 		//populate rating for dashboard
 		Rating rs1 = new Rating(2, cs1, s1); //Amanda's rating

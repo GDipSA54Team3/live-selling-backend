@@ -52,6 +52,35 @@ public class OrderController {
         
         return new ResponseEntity<>(allOrders, HttpStatus.OK);
     }
+
+    @GetMapping("/channelordersuser/{userId}")
+    public ResponseEntity<List<Orders>> getChannelOrdersByUserId(@PathVariable("userId") String userId) {
+        return new ResponseEntity<>(ordersRepo.findChannelOrdersByUserIdAndStatus(userId, OrderStatus.PENDING), HttpStatus.OK);
+    }
+
+    @GetMapping("/getorder/{orderId}")
+    public ResponseEntity<Orders> getOrderById(@PathVariable("orderId") String orderId) {
+        try {
+            return new ResponseEntity<>(ordersRepo.findById(orderId).get(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @PutMapping("/updateorderstatus/{orderId}/{status}")
+    public ResponseEntity<Orders> updateOrderStatus(@PathVariable("orderId") String orderId,
+                                                    @PathVariable("status") String status) {
+        try{
+            Orders updateOrder = ordersRepo.findById(orderId).get();
+//            OrderStatus state = (Objects.equals(status, "CONFIRMED")) ? OrderStatus.CONFIRMED : OrderStatus.PENDING;
+            updateOrder.setStatus((status.equals("CONFIRMED")) ? OrderStatus.CONFIRMED : OrderStatus.PENDING);
+            ordersRepo.save(updateOrder);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
     
     @GetMapping("/products/{orderId}")
     public ResponseEntity<List<OrderProduct>> getProductsInOrder(@PathVariable("orderId") String orderId){
