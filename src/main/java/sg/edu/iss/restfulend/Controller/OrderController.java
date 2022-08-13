@@ -53,9 +53,14 @@ public class OrderController {
         return new ResponseEntity<>(allOrders, HttpStatus.OK);
     }
 
-    @GetMapping("/channelordersuser/{userId}")
-    public ResponseEntity<List<Orders>> getChannelOrdersByUserId(@PathVariable("userId") String userId) {
+    @GetMapping("/channelordersuserpending/{userId}")
+    public ResponseEntity<List<Orders>> getChannelOrdersPendingByUserId(@PathVariable("userId") String userId) {
         return new ResponseEntity<>(ordersRepo.findChannelOrdersByUserIdAndStatus(userId, OrderStatus.PENDING), HttpStatus.OK);
+    }
+
+    @GetMapping("/channelordersuserconfirmed/{userId}")
+    public ResponseEntity<List<Orders>> getChannelOrdersConfirmedByUserId(@PathVariable("userId") String userId) {
+        return new ResponseEntity<>(ordersRepo.findChannelOrdersByUserIdAndStatus(userId, OrderStatus.CONFIRMED), HttpStatus.OK);
     }
 
     @GetMapping("/getorder/{orderId}")
@@ -73,7 +78,6 @@ public class OrderController {
                                                     @PathVariable("status") String status) {
         try{
             Orders updateOrder = ordersRepo.findById(orderId).get();
-//            OrderStatus state = (Objects.equals(status, "CONFIRMED")) ? OrderStatus.CONFIRMED : OrderStatus.PENDING;
             updateOrder.setStatus((status.equals("CONFIRMED")) ? OrderStatus.CONFIRMED : OrderStatus.PENDING);
             ordersRepo.save(updateOrder);
             return new ResponseEntity<>(HttpStatus.OK);

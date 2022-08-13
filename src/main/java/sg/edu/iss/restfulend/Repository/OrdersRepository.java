@@ -15,7 +15,7 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
 			+ "where o.status = 'PENDING' and cs.user_id = ?1", nativeQuery = true)	
 	Integer getPendingOrderCountBySeller(String id);
 
-	@Query("SELECT o FROM Orders o WHERE o.channel.user.id = :id AND o.status = :status")
+	@Query("SELECT o FROM Orders o WHERE o.channel.user.id = :id AND o.status = :status ORDER BY o.orderDateTime DESC")
 	List<Orders> findChannelOrdersByUserIdAndStatus(String id, OrderStatus status);
 	
 }
