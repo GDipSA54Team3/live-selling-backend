@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import sg.edu.iss.restfulend.Helper.ProductCategories;
 import sg.edu.iss.restfulend.Model.OrderProduct;
 import sg.edu.iss.restfulend.Model.Product;
-import sg.edu.iss.restfulend.Model.Stream;
 import sg.edu.iss.restfulend.Repository.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,6 +47,74 @@ public class ProductController {
     @GetMapping("/channelproducts/{userId}")
     public ResponseEntity<List<Product>> getProductsByUserId(@PathVariable("userId") String userId) {
         return new ResponseEntity<>(userRepo.findById(userId).get().getChannel().getProducts(), HttpStatus.OK);
+    }
+
+    @GetMapping("/channelproductssortbyname/{userId}/{ascOrDesc}")
+    public ResponseEntity<List<Product>> getProductsByUserIdSorted(@PathVariable("userId") String userId, @PathVariable("ascOrDesc") String ascOrDesc) {
+        List<Product> list;
+        if (ascOrDesc.equals("ascending")) {
+            list = userRepo.findById(userId).get().getChannel().getProducts()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getName))
+                    .collect(Collectors.toList());
+        } else {
+            list = userRepo.findById(userId).get().getChannel().getProducts()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getName).reversed())
+                    .collect(Collectors.toList());
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/channelproductssortbycat/{userId}/{ascOrDesc}")
+    public ResponseEntity<List<Product>> getProductsByUserIdCatSorted(@PathVariable("userId") String userId, @PathVariable("ascOrDesc") String ascOrDesc) {
+        List<Product> list;
+        if (ascOrDesc.equals("ascending")) {
+            list = userRepo.findById(userId).get().getChannel().getProducts()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getCategory))
+                    .collect(Collectors.toList());
+        } else {
+            list = userRepo.findById(userId).get().getChannel().getProducts()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getCategory).reversed())
+                    .collect(Collectors.toList());
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/channelproductssortbyprice/{userId}/{ascOrDesc}")
+    public ResponseEntity<List<Product>> getProductsByUserIdPriceSorted(@PathVariable("userId") String userId, @PathVariable("ascOrDesc") String ascOrDesc) {
+        List<Product> list;
+        if (ascOrDesc.equals("ascending")) {
+            list = userRepo.findById(userId).get().getChannel().getProducts()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getPrice))
+                    .collect(Collectors.toList());
+        } else {
+            list = userRepo.findById(userId).get().getChannel().getProducts()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getPrice).reversed())
+                    .collect(Collectors.toList());
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/channelproductssortbyqty/{userId}/{ascOrDesc}")
+    public ResponseEntity<List<Product>> getProductsByUserIdQtySorted(@PathVariable("userId") String userId, @PathVariable("ascOrDesc") String ascOrDesc) {
+        List<Product> list;
+        if (ascOrDesc.equals("ascending")) {
+            list = userRepo.findById(userId).get().getChannel().getProducts()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getQuantity))
+                    .collect(Collectors.toList());
+        } else {
+            list = userRepo.findById(userId).get().getChannel().getProducts()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getQuantity).reversed())
+                    .collect(Collectors.toList());
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping("/selectproduct/{prodId}")

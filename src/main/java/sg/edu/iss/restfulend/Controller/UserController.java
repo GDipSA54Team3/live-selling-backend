@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.iss.restfulend.Helper.DateTimeConverter;
 import sg.edu.iss.restfulend.Helper.StreamStatus;
-import sg.edu.iss.restfulend.Helper.UserSortByName;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
@@ -146,14 +145,6 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
-    }
-
-    //TESTING PURPOSES ONLY
-    @GetMapping("/getusers")
-    public ResponseEntity<List<User>> getUsers() {
-        List<User> users = userRepo.findAll();
-        users.sort(new UserSortByName());
-        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 
