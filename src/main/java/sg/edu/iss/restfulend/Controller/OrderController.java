@@ -128,14 +128,7 @@ public class OrderController {
     	
         
         return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
-    	/*
-    	try {
-        	
-        	//put order adding here
-        } catch (Exception e) {
-            return new ResponseEntity<>(newOrder, HttpStatus.EXPECTATION_FAILED);
-        }
-        */
+    
     }
 
 }

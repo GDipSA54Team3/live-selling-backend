@@ -2,6 +2,7 @@ package sg.edu.iss.restfulend.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,7 @@ public class Orders {
     private ChannelStream channel;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value={ "orderProduct" }, allowSetters=true)
+    @JsonManagedReference
     private List<OrderProduct> orderProduct;
 
     public Orders(User user, LocalDateTime orderDateTime, OrderStatus status, ChannelStream channel) {
