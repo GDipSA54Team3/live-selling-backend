@@ -5,11 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.iss.restfulend.Helper.OrderStatus;
+import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.OrderProduct;
 import sg.edu.iss.restfulend.Model.Orders;
+import sg.edu.iss.restfulend.Model.Stream;
+import sg.edu.iss.restfulend.Repository.ChannelStreamRepository;
 import sg.edu.iss.restfulend.Repository.OrderProductRepository;
 import sg.edu.iss.restfulend.Repository.OrdersRepository;
+import sg.edu.iss.restfulend.Repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +29,12 @@ public class OrderController {
     OrdersRepository ordersRepo;
     @Autowired
     OrderProductRepository orderProdRepo;
+    @Autowired
+    ChannelStreamRepository channelRepo;
+    @Autowired
+    UserRepository userRepo;
+    @Autowired
+    UserController userCont;
   
     @GetMapping("/pendingorders/{userId}")
     public String getPendingOrdersCount(@PathVariable("userId") String userId) {    	
@@ -94,6 +105,37 @@ public class OrderController {
     			.collect(Collectors.toList());
     	
     	return new ResponseEntity<>(productsInOrder, HttpStatus.OK);
+    }
+    
+    @PostMapping("/addorder/{userId}/{channelId}")
+    public ResponseEntity<Orders> addNewOrder(@RequestBody Orders order, @PathVariable("userId") String userId, @PathVariable("channelId") String channelId) {
+    	Orders newOrder = new Orders();
+    	newOrder.setChannel(userCont.findChannelById(channelId));
+    	newOrder.setUser(userCont.findUserById(userId));
+    	newOrder.setStatus(OrderStatus.PENDING);
+    	newOrder.setOrderDateTime(LocalDateTime.now());
+    	
+    	ordersRepo.saveAndFlush(newOrder);
+    	
+    	List<OrderProduct> listOfOrderProd = newOrder.getOrderProduct();
+    	
+    	for (OrderProduct orderProd : order.getOrderProduct()) {
+    		OrderProduct newOrderProd = new OrderProduct(orderProd.getQuantity(), 
+    				userCont.findProductById(orderProd.getProduct().getId()), //might need to find the ID
+    				newOrder);
+    		orderProdRepo.saveAndFlush(newOrderProd);
+    	}
+    	
+        
+        return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
+    	/*
+    	try {
+        	
+        	//put order adding here
+        } catch (Exception e) {
+            return new ResponseEntity<>(newOrder, HttpStatus.EXPECTATION_FAILED);
+        }
+        */
     }
 
 }
