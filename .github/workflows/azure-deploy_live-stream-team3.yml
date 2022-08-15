@@ -4,9 +4,10 @@
 name: Build and deploy JAR app to Azure Web App - live-stream-team3
 
 on:
-  push:
-    branches:
-      - azure-deploy
+  release:
+    types: [published]
+    tags:
+      - "v*"
   workflow_dispatch:
 
 jobs:
