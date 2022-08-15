@@ -1,6 +1,11 @@
 package sg.edu.iss.restfulend.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -28,6 +33,11 @@ public class ChannelStream {
     @JsonIgnore
     private List<Rating> ratings;
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
+    /*
+    @JsonIdentityInfo(
+    		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+    		  property = "id")
+    		  */
     @JsonIgnore
     private List<Orders> orders;
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)

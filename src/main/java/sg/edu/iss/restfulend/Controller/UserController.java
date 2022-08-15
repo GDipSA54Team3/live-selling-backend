@@ -9,6 +9,7 @@ import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -183,6 +184,27 @@ public class UserController {
     public String PendingStreamCountByUser(@PathVariable("userId") String userId) {
     	Integer pendingStreamCount = streamRepo.getPendingStreamCountByUser(userId);
         return String.valueOf(pendingStreamCount);
-    }    
+    }
+    
+    @GetMapping("searchstreams/{searchterm}")
+    public ResponseEntity<List<Stream>> getStreamsBySearchTerm(@PathVariable("searchterm") String searchTerm) {
+        List<Stream> listOfStreamsAfterSearch = new ArrayList<Stream>();
+        
+        /*
+        List<Product> products = productRepo.findAll();
+        products = products.stream()
+        		.filter(product -> product.getName().contains(searchTerm))
+        		.collect(Collectors.toList());
+        */
+        
+        listOfStreamsAfterSearch = streamRepo.findAll()
+        		.stream()
+        		.filter(stream -> 
+        				stream.getChannel().getName().toLowerCase().contains(searchTerm.toLowerCase()) ||
+        				stream.getTitle().toLowerCase().contains(searchTerm.toLowerCase()))
+        		.collect(Collectors.toList());
+        
+        return new ResponseEntity<>(listOfStreamsAfterSearch, HttpStatus.OK);
+    }
     
 }

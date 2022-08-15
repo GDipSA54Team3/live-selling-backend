@@ -144,7 +144,7 @@ public class ProductController {
         Optional<Product> pData = productRepo.findById(prodId);
         if (pData.isPresent()) {
             Product _product = pData.get();
-            String category = product.getCat();
+            String category = product.getCategory().toString();
             ProductCategories cat;
             switch(category) {
                 case ("CLOTHING"):
@@ -194,8 +194,8 @@ public class ProductController {
 
     @PostMapping("/addtostore/{userId}")
     public ResponseEntity<Product> addToStore(@PathVariable("userId") String userId, @RequestBody Product product) {
-        try {
-            String category = product.getCat();
+    	try {
+            String category = product.getCategory().toString();
             ProductCategories cat;
             switch(category) {
                 case("CLOTHING"):
