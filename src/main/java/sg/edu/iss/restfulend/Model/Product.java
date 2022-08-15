@@ -27,8 +27,6 @@ public class Product {
     private double price;
     private int quantity;
     @Transient
-    private String cat;
-    @Transient
     private String search;
 
     @ManyToOne

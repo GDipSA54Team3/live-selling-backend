@@ -1,18 +1,11 @@
 package sg.edu.iss.restfulend.Model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sg.edu.iss.restfulend.Helper.OrderStatus;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
+import sg.edu.iss.restfulend.Helper.OrderStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,7 +27,6 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
     @ManyToOne
-    
     private ChannelStream channel;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
