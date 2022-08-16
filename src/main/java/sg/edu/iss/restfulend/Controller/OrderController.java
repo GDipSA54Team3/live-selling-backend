@@ -67,9 +67,9 @@ public class OrderController {
         return new ResponseEntity<>(ordersRepo.findChannelOrdersByUserIdAndStatus(userId, OrderStatus.PENDING), HttpStatus.OK);
     }
 
-    @GetMapping("/channelordersuserconfirmed/{userId}")
-    public ResponseEntity<List<Orders>> getChannelOrdersConfirmedByUserId(@PathVariable("userId") String userId) {
-        return new ResponseEntity<>(ordersRepo.findChannelOrdersByUserIdAndStatus(userId, OrderStatus.CONFIRMED), HttpStatus.OK);
+    @GetMapping("/channelordersuserhistory/{userId}")
+    public ResponseEntity<List<Orders>> getChannelOrdersHistory(@PathVariable("userId") String userId) {
+        return new ResponseEntity<>(ordersRepo.findChannelOrdersByUserIdAndNotPending(userId, OrderStatus.PENDING), HttpStatus.OK);
     }
 
     @GetMapping("/getorder/{orderId}")
