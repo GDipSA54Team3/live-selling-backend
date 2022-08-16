@@ -17,5 +17,8 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
 
 	@Query("SELECT o FROM Orders o WHERE o.channel.user.id = :id AND o.status = :status ORDER BY o.orderDateTime DESC")
 	List<Orders> findChannelOrdersByUserIdAndStatus(String id, OrderStatus status);
+
+	@Query("SELECT o FROM Orders o WHERE o.channel.user.id = :id AND o.status <> :status ORDER BY o.orderDateTime DESC")
+	List<Orders> findChannelOrdersByUserIdAndNotPending(String id, OrderStatus status);
 	
 }
