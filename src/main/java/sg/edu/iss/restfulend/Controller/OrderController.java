@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import sg.edu.iss.restfulend.Helper.OrderStatus;
 import sg.edu.iss.restfulend.Model.OrderProduct;
 import sg.edu.iss.restfulend.Model.Orders;
+import sg.edu.iss.restfulend.Model.Product;
 import sg.edu.iss.restfulend.Repository.ChannelStreamRepository;
 import sg.edu.iss.restfulend.Repository.OrderProductRepository;
 import sg.edu.iss.restfulend.Repository.OrdersRepository;
@@ -104,7 +105,11 @@ public class OrderController {
     	
     	return new ResponseEntity<>(productsInOrder, HttpStatus.OK);
     }
-    
+    @PostMapping("/searchorder/{userId}")
+    public ResponseEntity<List<Orders>> searchOrder(@RequestBody Orders search, @PathVariable("userId") String userId) {
+        return new ResponseEntity<>(ordersRepo.findClosestOrdersByNameAndUserId(search.getSearch(), userId), HttpStatus.OK);
+    }
+
     @PostMapping("/addorder/{userId}/{channelId}")
     public ResponseEntity<Orders> addNewOrder(@RequestBody Orders order, @PathVariable("userId") String userId, @PathVariable("channelId") String channelId) {
     	Orders newOrder = new Orders();
@@ -123,7 +128,7 @@ public class OrderController {
     				newOrder);
     		orderProdRepo.saveAndFlush(newOrderProd);
     	}
-    	
+
         
         return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
     
