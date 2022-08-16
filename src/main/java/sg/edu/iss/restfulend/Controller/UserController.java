@@ -218,4 +218,14 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
     }
+    
+    @GetMapping("/getverifiedchannels")
+    public ResponseEntity<List<ChannelStream>> getAllVerifiedChannels() {
+        List<ChannelStream> verifiedChannels = channelRepo
+        		.findAll()
+        		.stream()
+        		.filter(channel -> channel.getUser().getIsVerified())
+        		.collect(Collectors.toList());
+        return new ResponseEntity<>(verifiedChannels, HttpStatus.OK);
+    }
 }

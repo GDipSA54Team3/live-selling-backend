@@ -29,6 +29,7 @@ public class User {
     private String username;
     @JsonIgnore
     private String password;
+    
     private Boolean isVerified;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
