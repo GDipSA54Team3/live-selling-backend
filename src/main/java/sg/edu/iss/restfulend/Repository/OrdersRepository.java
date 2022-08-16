@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import sg.edu.iss.restfulend.Helper.OrderStatus;
 import sg.edu.iss.restfulend.Model.Orders;
+import sg.edu.iss.restfulend.Model.Product;
 
 import java.util.List;
 
@@ -20,5 +21,9 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
 
 	@Query("SELECT o FROM Orders o WHERE o.channel.user.id = :id AND o.status <> :status ORDER BY o.orderDateTime DESC")
 	List<Orders> findChannelOrdersByUserIdAndNotPending(String id, OrderStatus status);
-	
+
+	@Query("SELECT o FROM Orders o WHERE o.name LIKE %:contains% AND o.channel.user.id = :id")
+	List<Orders> findClosestOrdersByNameAndUserId(String contains, String id);
+
+
 }
