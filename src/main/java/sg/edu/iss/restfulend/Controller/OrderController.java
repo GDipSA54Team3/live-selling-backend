@@ -5,10 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.iss.restfulend.Helper.OrderStatus;
-import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.OrderProduct;
 import sg.edu.iss.restfulend.Model.Orders;
-import sg.edu.iss.restfulend.Model.Stream;
 import sg.edu.iss.restfulend.Repository.ChannelStreamRepository;
 import sg.edu.iss.restfulend.Repository.OrderProductRepository;
 import sg.edu.iss.restfulend.Repository.OrdersRepository;
@@ -89,7 +87,7 @@ public class OrderController {
                                                     @PathVariable("status") String status) {
         try{
             Orders updateOrder = ordersRepo.findById(orderId).get();
-            updateOrder.setStatus((status.equals("CONFIRMED")) ? OrderStatus.CONFIRMED : OrderStatus.PENDING);
+            updateOrder.setStatus((status.equals("CONFIRMED")) ? OrderStatus.CONFIRMED : OrderStatus.CANCELLED);
             ordersRepo.save(updateOrder);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
