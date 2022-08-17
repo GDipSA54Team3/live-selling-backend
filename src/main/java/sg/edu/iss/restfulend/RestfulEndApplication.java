@@ -144,16 +144,9 @@ public class RestfulEndApplication {
 		Rating rs2 = new Rating(3, cs2, s2); //James's rating
 		Rating rs3 = new Rating(4, cs2, s2); //James's another rating
 		Rating rs4 = new Rating(1, cs2, s2); //James's another rating
-		Rating rb1 = new Rating(5, csb1, b1); //Tom's rating
-		Rating rb2 = new Rating(4, csb2, b2); //Melinda's rating
-		Rating rb3 = new Rating(3, csb3, b3);  //Jee's rating
-		Rating rb4 = new Rating(1, csb4, b4);  //Jess's rating
-		Rating rb5 = new Rating(4, csb5, b5);  //Peter's rating
-		Rating rb6 = new Rating(2, csb6, b6);  //Sarah's rating
 		
 		ratingRepo.save(rs1);ratingRepo.save(rs2);ratingRepo.save(rs3);ratingRepo.save(rs4);
-		ratingRepo.save(rb1);ratingRepo.save(rb2);ratingRepo.save(rb3);
-		ratingRepo.save(rb4);ratingRepo.save(rb5);ratingRepo.save(rb6);
+
 		
 		//populate orders to plot djshbord charts
 		LOGGER.info("---------------------------This will take a while. Please wait" );

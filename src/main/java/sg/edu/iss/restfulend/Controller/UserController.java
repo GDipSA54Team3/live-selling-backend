@@ -207,4 +207,25 @@ public class UserController {
         return new ResponseEntity<>(listOfStreamsAfterSearch, HttpStatus.OK);
     }
     
+    @PutMapping("/verify/{userId}")
+    public ResponseEntity<User> verifyUser(@PathVariable("userId") String userId) {
+        try {
+            User user = findUserById(userId);
+            user.setIsVerified(true);
+            userRepo.saveAndFlush(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+    
+    @GetMapping("/getverifiedchannels")
+    public ResponseEntity<List<ChannelStream>> getAllVerifiedChannels() {
+        List<ChannelStream> verifiedChannels = channelRepo
+        		.findAll()
+        		.stream()
+        		.filter(channel -> channel.getUser().getIsVerified())
+        		.collect(Collectors.toList());
+        return new ResponseEntity<>(verifiedChannels, HttpStatus.OK);
+    }
 }

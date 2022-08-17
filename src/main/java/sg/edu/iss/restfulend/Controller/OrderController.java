@@ -5,10 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.iss.restfulend.Helper.OrderStatus;
-import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.OrderProduct;
 import sg.edu.iss.restfulend.Model.Orders;
-import sg.edu.iss.restfulend.Model.Stream;
 import sg.edu.iss.restfulend.Repository.ChannelStreamRepository;
 import sg.edu.iss.restfulend.Repository.OrderProductRepository;
 import sg.edu.iss.restfulend.Repository.OrdersRepository;
@@ -69,9 +67,9 @@ public class OrderController {
         return new ResponseEntity<>(ordersRepo.findChannelOrdersByUserIdAndStatus(userId, OrderStatus.PENDING), HttpStatus.OK);
     }
 
-    @GetMapping("/channelordersuserconfirmed/{userId}")
-    public ResponseEntity<List<Orders>> getChannelOrdersConfirmedByUserId(@PathVariable("userId") String userId) {
-        return new ResponseEntity<>(ordersRepo.findChannelOrdersByUserIdAndStatus(userId, OrderStatus.CONFIRMED), HttpStatus.OK);
+    @GetMapping("/channelordersuserhistory/{userId}")
+    public ResponseEntity<List<Orders>> getChannelOrdersHistory(@PathVariable("userId") String userId) {
+        return new ResponseEntity<>(ordersRepo.findChannelOrdersByUserIdAndNotPending(userId, OrderStatus.PENDING), HttpStatus.OK);
     }
 
     @GetMapping("/getorder/{orderId}")
@@ -89,7 +87,7 @@ public class OrderController {
                                                     @PathVariable("status") String status) {
         try{
             Orders updateOrder = ordersRepo.findById(orderId).get();
-            updateOrder.setStatus((status.equals("CONFIRMED")) ? OrderStatus.CONFIRMED : OrderStatus.PENDING);
+            updateOrder.setStatus((status.equals("CONFIRMED")) ? OrderStatus.CONFIRMED : OrderStatus.CANCELLED);
             ordersRepo.save(updateOrder);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -106,7 +104,12 @@ public class OrderController {
     	
     	return new ResponseEntity<>(productsInOrder, HttpStatus.OK);
     }
-    
+
+    @PostMapping("/searchorder/{userId}")
+    public ResponseEntity<List<Orders>> searchOrder(@RequestBody Orders search, @PathVariable("userId") String userId) {
+        return new ResponseEntity<>(ordersRepo.findClosestPendingOrdersByNameAndUserId(search.getSearch(), userId, OrderStatus.PENDING), HttpStatus.OK);
+    }
+
     @PostMapping("/addorder/{userId}/{channelId}")
     public ResponseEntity<Orders> addNewOrder(@RequestBody Orders order, @PathVariable("userId") String userId, @PathVariable("channelId") String channelId) {
     	Orders newOrder = new Orders();
@@ -125,7 +128,7 @@ public class OrderController {
     				newOrder);
     		orderProdRepo.saveAndFlush(newOrderProd);
     	}
-    	
+
         
         return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
     

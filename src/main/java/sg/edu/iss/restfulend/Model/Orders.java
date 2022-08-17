@@ -28,10 +28,13 @@ public class Orders {
     private OrderStatus status;
     @ManyToOne
     private ChannelStream channel;
-
+    @Transient
+    private String search;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<OrderProduct> orderProduct;
+
+
 
     public Orders(User user, LocalDateTime orderDateTime, OrderStatus status, ChannelStream channel) {
         this.orderDateTime = orderDateTime;
