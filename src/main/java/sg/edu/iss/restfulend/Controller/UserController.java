@@ -63,6 +63,15 @@ public class UserController {
     public ResponseEntity<List<Stream>> getAllUserStreamsPending(@PathVariable("userId") String userId) {
         return new ResponseEntity<>(streamRepo.getStreamsByUserIdAndStatus(userId, StreamStatus.PENDING), HttpStatus.OK);
     }
+    
+    @PutMapping("/setstreamtoongoing/{streamId}")
+    public ResponseEntity<Stream> setStreamToOngoing(@PathVariable("streamId") String streamId) {
+        Stream stream = findStreamById(streamId);
+        stream.setStatus(StreamStatus.ONGOING);
+        streamRepo.save(stream);
+    	
+    	return new ResponseEntity<>(stream, HttpStatus.OK);
+    }
 
     @DeleteMapping("/deletestream/{streamId}")
     public ResponseEntity<HttpStatus> deleteStream(@PathVariable("streamId") String streamId) {
@@ -190,18 +199,18 @@ public class UserController {
     public ResponseEntity<List<Stream>> getStreamsBySearchTerm(@PathVariable("searchterm") String searchTerm) {
         List<Stream> listOfStreamsAfterSearch = new ArrayList<Stream>();
         
-        /*
-        List<Product> products = productRepo.findAll();
-        products = products.stream()
-        		.filter(product -> product.getName().contains(searchTerm))
+        List<ChannelStream> listOfChannels = productRepo.findAll()
+        		.stream()
+        		.filter(product -> product.getName().equals(searchTerm.toLowerCase()))
+        		.map(product -> product.getChannel())
         		.collect(Collectors.toList());
-        */
         
         listOfStreamsAfterSearch = streamRepo.findAll()
         		.stream()
         		.filter(stream -> 
         				stream.getChannel().getName().toLowerCase().contains(searchTerm.toLowerCase()) ||
-        				stream.getTitle().toLowerCase().contains(searchTerm.toLowerCase()))
+        				stream.getTitle().toLowerCase().contains(searchTerm.toLowerCase()) ||
+        				listOfChannels.contains(stream.getChannel()))
         		.collect(Collectors.toList());
         
         return new ResponseEntity<>(listOfStreamsAfterSearch, HttpStatus.OK);
