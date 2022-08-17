@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import sg.edu.iss.restfulend.Helper.StreamStatus;
 import sg.edu.iss.restfulend.Model.ChannelStream;
 import sg.edu.iss.restfulend.Model.Stream;
 import sg.edu.iss.restfulend.Model.StreamLog;
@@ -61,7 +62,11 @@ public class StreamLogController {
         
         Optional<Stream> sampleStream = streamRepo.findById(streamId);
         Stream stream = sampleStream.isPresent() ? sampleStream.get() : null;
-            	
+        if (stream != null) {
+            stream.setStatus(StreamStatus.COMPLETED);
+            streamRepo.save(stream);
+        }
+        
     	try {
         		
         	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream);
