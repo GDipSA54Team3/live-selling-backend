@@ -68,6 +68,7 @@ public class StreamLogController {
         }
         
     	try {
+<<<<<<< HEAD
         		
 <<<<<<< HEAD
         	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream);
@@ -76,6 +77,11 @@ public class StreamLogController {
 =======
         	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream, streamLog.getNumViewers(), streamLog.getStreamStartTime(), streamLog.getStreamEndTime());
 >>>>>>> c325b143a646f8294108abae731eedfaf434b513
+=======
+
+        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream, streamLog.getNumViewers(), streamLog.getStreamStartTime(), streamLog.getStreamEndTime());
+
+>>>>>>> 3f037c5001e635d0c967c94d92315fdc9897ca2f
         	logRepo.save(newLog);
         	return new ResponseEntity<StreamLog>(newLog, HttpStatus.CREATED);
         	
