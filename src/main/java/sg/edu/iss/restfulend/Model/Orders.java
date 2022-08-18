@@ -1,5 +1,6 @@
 package sg.edu.iss.restfulend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,16 +33,19 @@ public class Orders {
     private String search;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<OrderProduct> orderProduct;
+    private List<OrderProduct> orderProduct;    
+    @JsonIgnore
+    @ManyToOne
+    private Stream stream;
 
-
-
-    public Orders(User user, LocalDateTime orderDateTime, OrderStatus status, ChannelStream channel) {
+    public Orders(User user, LocalDateTime orderDateTime, OrderStatus status, ChannelStream channel, Stream stream) {
         this.orderDateTime = orderDateTime;
         this.orderProduct = new ArrayList<>();
         this.user = user;
         this.status = status;
         this.channel=channel;
+        this.stream=stream;  
+        
     }
     
 }

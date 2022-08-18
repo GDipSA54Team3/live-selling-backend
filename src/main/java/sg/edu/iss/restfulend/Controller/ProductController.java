@@ -55,12 +55,12 @@ public class ProductController {
         if (ascOrDesc.equals("ascending")) {
             list = userRepo.findById(userId).get().getChannel().getProducts()
                     .stream()
-                    .sorted(Comparator.comparing(Product::getName))
+                    .sorted(Comparator.comparing(Product::getName, String::compareToIgnoreCase))
                     .collect(Collectors.toList());
         } else {
             list = userRepo.findById(userId).get().getChannel().getProducts()
                     .stream()
-                    .sorted(Comparator.comparing(Product::getName).reversed())
+                    .sorted(Comparator.comparing(Product::getName, String::compareToIgnoreCase).reversed())
                     .collect(Collectors.toList());
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
