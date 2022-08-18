@@ -195,46 +195,55 @@ public class ProductController {
     @PostMapping("/addtostore/{userId}")
     public ResponseEntity<Product> addToStore(@PathVariable("userId") String userId, @RequestBody Product product) {
     	try {
-            String category = product.getCategory().toString();
-            ProductCategories cat;
-            switch(category) {
-                case("CLOTHING"):
-                    cat = ProductCategories.CLOTHING;
-                    break;
-                case("FOOD"):
-                    cat = ProductCategories.FOOD;
-                    break;
-                case("FURNITURES"):
-                    cat = ProductCategories.FURNITURES;
-                    break;
-                case("APPLIANCES"):
-                    cat = ProductCategories.APPLIANCES;
-                    break;
-                case ("TECHNOLOGY"):
-                    cat = ProductCategories.TECHNOLOGY;
-                    break;
-                case("BABY"):
-                    cat = ProductCategories.BABY;
-                    break;
-                case("HEALTH"):
-                    cat = ProductCategories.HEALTH;
-                    break;
-                case("SPORTS"):
-                    cat = ProductCategories.SPORTS;
-                    break;
-                case("GROCERIES"):
-                    cat = ProductCategories.GROCERIES;
-                    break;
-                case("OTHERS"):
-                    cat = ProductCategories.OTHERS;
-                    break;
-                default:
-                    cat = ProductCategories.OTHERS;
-                    break;
+            List<Product> pList = productRepo.findAll()
+                    .stream()
+                    .filter(p -> p.getName().equals(product.getName()) && p.getChannel().getUser().getId().equals(userId))
+                    .collect(Collectors.toList());
+
+            if (pList.size() < 1) {
+                String category = product.getCategory().toString();
+                ProductCategories cat;
+                switch (category) {
+                    case ("CLOTHING"):
+                        cat = ProductCategories.CLOTHING;
+                        break;
+                    case ("FOOD"):
+                        cat = ProductCategories.FOOD;
+                        break;
+                    case ("FURNITURES"):
+                        cat = ProductCategories.FURNITURES;
+                        break;
+                    case ("APPLIANCES"):
+                        cat = ProductCategories.APPLIANCES;
+                        break;
+                    case ("TECHNOLOGY"):
+                        cat = ProductCategories.TECHNOLOGY;
+                        break;
+                    case ("BABY"):
+                        cat = ProductCategories.BABY;
+                        break;
+                    case ("HEALTH"):
+                        cat = ProductCategories.HEALTH;
+                        break;
+                    case ("SPORTS"):
+                        cat = ProductCategories.SPORTS;
+                        break;
+                    case ("GROCERIES"):
+                        cat = ProductCategories.GROCERIES;
+                        break;
+                    case ("OTHERS"):
+                        cat = ProductCategories.OTHERS;
+                        break;
+                    default:
+                        cat = ProductCategories.OTHERS;
+                        break;
+                }
+                Product p = productRepo.save(new Product(product.getName(), cat, product.getDescription(),
+                        product.getPrice(), product.getQuantity(), userRepo.findById(userId).get().getChannel()));
+                return new ResponseEntity<>(p, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
-            Product p = productRepo.save(new Product(product.getName(), cat, product.getDescription(),
-                    product.getPrice(), product.getQuantity(), userRepo.findById(userId).get().getChannel()));
-            return new ResponseEntity<>(p, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
