@@ -64,7 +64,7 @@ public class StreamLogController {
             	
     	try {
         		
-        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream);
+        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream, streamLog.getNumViewers(), streamLog.getStreamStartTime(), streamLog.getStreamEndTime());
         	logRepo.save(newLog);
         	return new ResponseEntity<StreamLog>(newLog, HttpStatus.CREATED);
         	
