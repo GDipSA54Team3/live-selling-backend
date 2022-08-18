@@ -68,10 +68,9 @@ public class StreamLogController {
         }
         
     	try {
-        		
-        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream);
-        	//add other information here (start, end and maxViewers)
-        	//get streamstartdate for start, get localdatetime.now for end, get maxviewers from body
+
+        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream, streamLog.getNumViewers(), streamLog.getStreamStartTime(), streamLog.getStreamEndTime());
+
         	logRepo.save(newLog);
         	return new ResponseEntity<StreamLog>(newLog, HttpStatus.CREATED);
         	
