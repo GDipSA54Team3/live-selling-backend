@@ -110,11 +110,12 @@ public class OrderController {
         return new ResponseEntity<>(ordersRepo.findClosestPendingOrdersByNameAndUserId(search.getSearch(), userId, OrderStatus.PENDING), HttpStatus.OK);
     }
 
-    @PostMapping("/addorder/{userId}/{channelId}")
-    public ResponseEntity<Orders> addNewOrder(@RequestBody Orders order, @PathVariable("userId") String userId, @PathVariable("channelId") String channelId) {
+    @PostMapping("/addorder/{userId}/{channelId}/{streamId}")
+    public ResponseEntity<Orders> addNewOrder(@RequestBody Orders order, @PathVariable("userId") String userId, @PathVariable("channelId") String channelId, @PathVariable("streamId") String streamId) {
     	Orders newOrder = new Orders();
     	newOrder.setChannel(userCont.findChannelById(channelId));
     	newOrder.setUser(userCont.findUserById(userId));
+    	newOrder.setStream(userCont.findStreamById(streamId));
     	newOrder.setStatus(OrderStatus.PENDING);
     	newOrder.setOrderDateTime(LocalDateTime.now());
     	

@@ -11,6 +11,7 @@ import sg.edu.iss.restfulend.Model.StreamLog;
 import sg.edu.iss.restfulend.Model.User;
 import sg.edu.iss.restfulend.Repository.*;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,26 +63,20 @@ public class StreamLogController {
         
         Optional<Stream> sampleStream = streamRepo.findById(streamId);
         Stream stream = sampleStream.isPresent() ? sampleStream.get() : null;
+
         if (stream != null) {
             stream.setStatus(StreamStatus.COMPLETED);
             streamRepo.save(stream);
         }
         
     	try {
-<<<<<<< HEAD
-        		
-<<<<<<< HEAD
-        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream);
+
         	//add other information here (start, end and maxViewers)
         	//get streamstartdate for start, get localdatetime.now for end, get maxviewers from body
-=======
-        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream, streamLog.getNumViewers(), streamLog.getStreamStartTime(), streamLog.getStreamEndTime());
->>>>>>> c325b143a646f8294108abae731eedfaf434b513
-=======
 
-        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream, streamLog.getNumViewers(), streamLog.getStreamStartTime(), streamLog.getStreamEndTime());
 
->>>>>>> 3f037c5001e635d0c967c94d92315fdc9897ca2f
+        	StreamLog newLog = new StreamLog(streamLog.getNumLikes(), seller, stream, streamLog.getNumViewers(), stream.getSchedule(), LocalDateTime.now());
+
         	logRepo.save(newLog);
         	return new ResponseEntity<StreamLog>(newLog, HttpStatus.CREATED);
         	
