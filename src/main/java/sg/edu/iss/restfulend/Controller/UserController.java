@@ -46,16 +46,23 @@ public class UserController {
     }
     
     @GetMapping("/notcompletedstreams")
-    public List<Stream> getAllNonCompletedStreams() {
-        return streamRepo.findAll()
+    public ResponseEntity<List<Stream>> getAllNonCompletedStreams() {
+        List<Stream> streamsNotCompleted = streamRepo.findAll()
         		.stream()
         		.filter(stream -> !stream.getStatus().equals(StreamStatus.COMPLETED))
-        		.toList();
+        		.collect(Collectors.toList());
+        
+        return new ResponseEntity<>(streamsNotCompleted, HttpStatus.OK);
     }
 
     @GetMapping("/userstreams/{userId}")
     public ResponseEntity<List<Stream>> getAllUserStreams(@PathVariable("userId") String userId) {
-        return new ResponseEntity<>(channelRepo.getStreamsByUserId(userId), HttpStatus.OK);
+    	List<Stream> streamsNotCompleted = streamRepo.findAll()
+        		.stream()
+        		.filter(stream -> (!stream.getStatus().equals(StreamStatus.COMPLETED) && (stream.getChannel().getUser().getId().equals(userId))))
+        		.collect(Collectors.toList());
+    	
+        return new ResponseEntity<>(streamsNotCompleted, HttpStatus.OK);
     }
     
     @GetMapping("/notuserstreams/{userId}/")
