@@ -180,8 +180,8 @@ public class RestfulEndApplication {
 				Orders order2 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, str2);
 				Orders order3 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, str2);
 				Orders order4 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, str2);
-				Orders order5 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, str2);
-				Orders order6 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order5 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order6 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
 				Orders order7 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
 				Orders order8 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
 				Orders order9 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
