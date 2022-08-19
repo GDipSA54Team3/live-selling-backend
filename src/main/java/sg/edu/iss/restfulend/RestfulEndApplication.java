@@ -226,12 +226,9 @@ public class RestfulEndApplication {
 	
 		StreamLog streamlog1 = new StreamLog(45,u2, str2, 10, LocalDateTime.now().minusHours(2), LocalDateTime.now()); //Jame's streamlog 
 		StreamLog streamlog2 = new StreamLog(35, u2, str2, 30, LocalDateTime.now().minusHours(2), LocalDateTime.now()); //Jame's streamlog 
-		StreamLog streamlog3 = new StreamLog(25, u1, str1, 40, LocalDateTime.now().minusHours(2), LocalDateTime.now()); //Melinda's streamlog
-		StreamLog streamlog4 = new StreamLog(30, u1, str1, 20, LocalDateTime.now().minusHours(2), LocalDateTime.now()) ;//Melinda's another streamlog
-		StreamLog streamlog5 = new StreamLog(250, u1, str1, 30, LocalDateTime.now().minusHours(2), LocalDateTime.now()); //Melinda's another streamlog
+		
 		logRepo.save(streamlog1);	logRepo.save(streamlog2);
-		logRepo.save(streamlog3);logRepo.save(streamlog4);
-		logRepo.save(streamlog5);
+		
 		
 		//	Populate some pending orders
 		LocalDateTime currTime = LocalDateTime.now();
