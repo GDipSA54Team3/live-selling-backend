@@ -124,8 +124,14 @@ public class RestfulEndApplication {
 		User b5 = new User("Peter", "Pang", "Sentosa Cove 2", "peterpang", "peterpang", false);
 		UserRepo.save(b5);
 		ChannelStream csb5 = new ChannelStream("peterpang", b5);
+		
+		Stream str1 = new Stream("Amanda's beauty Fest", LocalDateTime.now().minusHours(2), cs1, StreamStatus.COMPLETED); //Amanda's stream
+		Stream str2 = new Stream("Jame's Tech Fest", LocalDateTime.now().minusHours(2),cs2, StreamStatus.COMPLETED); //Jame's stream 
+		streamRepo.save(str2);
+		streamRepo.save(str1);
+		
 		channelRepo.save(csb5);
-		Orders o2 = new Orders(b5, LocalDateTime.now(), OrderStatus.PENDING, cs2, null);
+		Orders o2 = new Orders(b5, LocalDateTime.now(), OrderStatus.PENDING, cs2, str2);
 		ordersRepo.save(o2);
 		OrderProduct op2 = new OrderProduct(1,pcs2_1, o2);
 		orderProductRepo.save(op2);
@@ -134,7 +140,7 @@ public class RestfulEndApplication {
 		UserRepo.save(b6);
 		ChannelStream csb6 = new ChannelStream("sarahsim", b6);
 		channelRepo.save(csb6);
-		Orders o1 = new Orders(b6, LocalDateTime.now(), OrderStatus.PENDING, cs2, null);
+		Orders o1 = new Orders(b6, LocalDateTime.now(), OrderStatus.PENDING, cs2, str2);
 		ordersRepo.save(o1);
 		OrderProduct op1 = new OrderProduct(1,pcs2_2, o1);
 		orderProductRepo.save(op1);
@@ -170,17 +176,17 @@ public class RestfulEndApplication {
 				LocalDateTime datetime2 = datetime1.plusHours(6);
 				LocalDateTime datetime3 = datetime1.plusHours(12);
 				LocalDateTime datetime4 = datetime1.plusHours(18);
-				Orders order1 = new Orders(buyer1, datetime1, OrderStatus.CONFIRMED, cs2, null);
-				Orders order2 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, null);
-				Orders order3 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, null);
-				Orders order4 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, null);
-				Orders order5 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, null);
-				Orders order6 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, null);
-				Orders order7 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, null);
-				Orders order8 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, null);
-				Orders order9 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, null);
-				Orders order10 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED, cs2, null);
-				Orders order11 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED, cs2, null);
+				Orders order1 = new Orders(buyer1, datetime1, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order2 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order3 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order4 = new Orders(buyer1, datetime2, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order5 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order6 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order7 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order8 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order9 = new Orders(buyer1, datetime3, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order10 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED, cs2, str2);
+				Orders order11 = new Orders(buyer1, datetime4, OrderStatus.CONFIRMED, cs2, str2);
 				ordersRepo.save(order1);	ordersRepo.save(order2);
 				ordersRepo.save(order3);ordersRepo.save(order4);
 				ordersRepo.save(order5);ordersRepo.save(order6);
@@ -190,11 +196,12 @@ public class RestfulEndApplication {
 			}			
 		}
 		//populate Jame's streamlog for (initilal dashboard display)
-		StreamLog streamlog1 = new StreamLog(45, s2, null, 10, LocalDateTime.now().minusHours(1), LocalDateTime.now() ); //Jame's streamlog 
-		StreamLog streamlog2 = new StreamLog(35, s2, null, 30, LocalDateTime.now().minusHours(1), LocalDateTime.now() ); //Jame's streamlog 
-		StreamLog streamlog3 = new StreamLog(25, s1, null, 40, LocalDateTime.now().minusHours(1), LocalDateTime.now() ); //Melinda's streamlog
-		StreamLog streamlog4 = new StreamLog(30, s1, null, 20, LocalDateTime.now().minusHours(1), LocalDateTime.now() ) ;//Melinda's another streamlog
-		StreamLog streamlog5 = new StreamLog(250, s1, null, 30, LocalDateTime.now().minusHours(1), LocalDateTime.now() ); //Melinda's another streamlog
+	
+		StreamLog streamlog1 = new StreamLog(45, s2, str2, 10, LocalDateTime.now().minusHours(2), LocalDateTime.now()); //Jame's streamlog 
+		StreamLog streamlog2 = new StreamLog(35, s2, str2, 30, LocalDateTime.now().minusHours(2), LocalDateTime.now()); //Jame's streamlog 
+		StreamLog streamlog3 = new StreamLog(25, s1, str1, 40, LocalDateTime.now().minusHours(2), LocalDateTime.now()); //Melinda's streamlog
+		StreamLog streamlog4 = new StreamLog(30, s1, str1, 20, LocalDateTime.now().minusHours(2), LocalDateTime.now()) ;//Melinda's another streamlog
+		StreamLog streamlog5 = new StreamLog(250, s1, str1, 30, LocalDateTime.now().minusHours(2), LocalDateTime.now()); //Melinda's another streamlog
 		logRepo.save(streamlog1);	logRepo.save(streamlog2);
 		logRepo.save(streamlog3);logRepo.save(streamlog4);
 		logRepo.save(streamlog5);
