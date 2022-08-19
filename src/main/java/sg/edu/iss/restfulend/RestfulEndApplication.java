@@ -125,13 +125,16 @@ public class RestfulEndApplication {
 		UserRepo.save(b5);
 		ChannelStream csb5 = new ChannelStream("peterpang", b5);
 		
-		Stream str1 = new Stream("Amanda's beauty Fest", LocalDateTime.now().minusHours(2), cs1, StreamStatus.COMPLETED); //Amanda's stream
-		Stream str2 = new Stream("Jame's Tech Fest", LocalDateTime.now().minusHours(2),cs2, StreamStatus.COMPLETED); //Jame's stream 
-		streamRepo.save(str2);
+//		Stream str1 = new Stream("Amanda's beauty Fest", LocalDateTime.now().minusHours(2), cs1, StreamStatus.COMPLETED); //Amanda's stream
+//		Stream str2 = new Stream("Jame's Tech Fest", LocalDateTime.now().minusHours(2),cs2, StreamStatus.COMPLETED); //Jame's stream 
+		Stream str1 = new Stream("Jame's Tech Fest2", LocalDateTime.now().minusHours(2),cs2, StreamStatus.COMPLETED); //Jame's stream 
+		Stream str2 = new Stream("Amanda's beauty Fest2", LocalDateTime.now().minusHours(2), cs1, StreamStatus.COMPLETED); //Amanda's stream
+//		streamRepo.save(str1);
+//		streamRepo.save(str2);
 		streamRepo.save(str1);
-		
+		streamRepo.save(str2);
 		channelRepo.save(csb5);
-		Orders o2 = new Orders(b5, LocalDateTime.now(), OrderStatus.PENDING, cs2, str2);
+		Orders o2 = new Orders(b5, LocalDateTime.now(), OrderStatus.PENDING, cs2, null);
 		ordersRepo.save(o2);
 		OrderProduct op2 = new OrderProduct(1,pcs2_1, o2);
 		orderProductRepo.save(op2);
@@ -140,7 +143,7 @@ public class RestfulEndApplication {
 		UserRepo.save(b6);
 		ChannelStream csb6 = new ChannelStream("sarahsim", b6);
 		channelRepo.save(csb6);
-		Orders o1 = new Orders(b6, LocalDateTime.now(), OrderStatus.PENDING, cs2, str2);
+		Orders o1 = new Orders(b6, LocalDateTime.now(), OrderStatus.PENDING, cs2, null);
 		ordersRepo.save(o1);
 		OrderProduct op1 = new OrderProduct(1,pcs2_2, o1);
 		orderProductRepo.save(op1);
