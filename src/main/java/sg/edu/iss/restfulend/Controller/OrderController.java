@@ -79,7 +79,6 @@ public class OrderController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
 
     @PutMapping("/updateorderstatus/{orderId}/{status}")
@@ -89,7 +88,7 @@ public class OrderController {
             Orders updateOrder = ordersRepo.findById(orderId).get();
             updateOrder.setStatus((status.equals("CONFIRMED")) ? OrderStatus.CONFIRMED : OrderStatus.CANCELLED);
             ordersRepo.save(updateOrder);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK); 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }

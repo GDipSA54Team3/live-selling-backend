@@ -44,17 +44,32 @@ public class UserController {
     public List<Stream> getAllStreams() {
         return streamRepo.findAll();
     }
+    
+    @GetMapping("/notcompletedstreams")
+    public ResponseEntity<List<Stream>> getAllNonCompletedStreams() {
+        List<Stream> streamsNotCompleted = streamRepo.findAll()
+        		.stream()
+        		.filter(stream -> !stream.getStatus().equals(StreamStatus.COMPLETED))
+        		.collect(Collectors.toList());
+        
+        return new ResponseEntity<>(streamsNotCompleted, HttpStatus.OK);
+    }
 
     @GetMapping("/userstreams/{userId}")
     public ResponseEntity<List<Stream>> getAllUserStreams(@PathVariable("userId") String userId) {
-        return new ResponseEntity<>(channelRepo.getStreamsByUserId(userId), HttpStatus.OK);
+    	List<Stream> streamsNotCompleted = streamRepo.findAll()
+        		.stream()
+        		.filter(stream -> (!stream.getStatus().equals(StreamStatus.COMPLETED) && (stream.getChannel().getUser().getId().equals(userId))))
+        		.collect(Collectors.toList());
+    	
+        return new ResponseEntity<>(streamsNotCompleted, HttpStatus.OK);
     }
     
-    @GetMapping("/notuserstreams/{channelId}")
-    public ResponseEntity<List<Stream>> getAllStreamsNotByUser(@PathVariable("channelId") String channelId) {
+    @GetMapping("/notuserstreams/{userId}/")
+    public ResponseEntity<List<Stream>> getAllStreamsNotByUser(@PathVariable("userId") String userId) {
     	List<Stream> notByUser = streamRepo.findAll()
     			.stream()
-    			.filter(stream -> !stream.getChannel().getId().equals(channelId))
+    			.filter(stream -> !stream.getChannel().getUser().getId().equals(userId))
     			.collect(Collectors.toList());
         return new ResponseEntity<>(notByUser, HttpStatus.OK);
     }
@@ -83,6 +98,14 @@ public class UserController {
     @GetMapping("/channels")
     public List<ChannelStream> getAllChannels() {
         return channelRepo.findAll();
+    }
+    
+    @GetMapping("/channels/notbyuser/{userId}")
+    public List<ChannelStream> getAllChannelsNotByUser(@PathVariable("userId") String userId) {
+        return channelRepo.findAll()
+        		.stream()
+        		.filter(channel -> !channel.getUser().getId().equals(userId))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/streams/{streamId}")
@@ -132,7 +155,7 @@ public class UserController {
         	
         	if(userList.size() < 1) {
         		User user = userRepo.save(new User(newUser.getFirstName(), newUser.getLastName(), address, username, password, newUser.getIsVerified()));
-            	ChannelStream channel = channelRepo.save(new ChannelStream(channelName, user));
+            	channelRepo.save(new ChannelStream(channelName, user));
                 return new ResponseEntity<>(user, HttpStatus.CREATED);
         	} else {
         		return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -228,12 +251,12 @@ public class UserController {
         }
     }
     
-    @GetMapping("/getverifiedchannels")
-    public ResponseEntity<List<ChannelStream>> getAllVerifiedChannels() {
+    @GetMapping("/getverifiedchannels/{channelId}")
+    public ResponseEntity<List<ChannelStream>> getAllVerifiedChannels(@PathVariable("channelId") String channelId) {
         List<ChannelStream> verifiedChannels = channelRepo
         		.findAll()
         		.stream()
-        		.filter(channel -> channel.getUser().getIsVerified())
+        		.filter(channel -> channel.getUser().getIsVerified() && !channel.getId().equals(channelId))
         		.collect(Collectors.toList());
         return new ResponseEntity<>(verifiedChannels, HttpStatus.OK);
     }
