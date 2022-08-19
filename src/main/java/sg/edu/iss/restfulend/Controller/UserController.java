@@ -105,7 +105,7 @@ public class UserController {
         return channelRepo.findAll()
         		.stream()
         		.filter(channel -> !channel.getUser().getId().equals(userId))
-        		.toList();
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/streams/{streamId}")
