@@ -13,7 +13,6 @@ import sg.edu.iss.restfulend.Model.*;
 import sg.edu.iss.restfulend.Repository.*;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Random;
@@ -52,8 +51,8 @@ public class RestfulEndApplication {
 	@Bean
 	CommandLineRunner runner() {
 		return args -> {
-			clearDatabase();
-			populateDatabase();
+//			clearDatabase();
+//			populateDatabase();
 		};
 	}
 
